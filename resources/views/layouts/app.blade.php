@@ -15,6 +15,7 @@
         <!--link i class fas-fa icon -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.0/css/dataTables.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.0/css/buttons.dataTables.css">
 
 
         <!-- Scripts -->
@@ -44,5 +45,8 @@
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.1.0/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.print.min.js"></script>
     </body>
 </html>

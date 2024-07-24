@@ -53,7 +53,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::resource('admin/pelanggan',UserController::class);
     Route::resource('admin/katalog', KatalogController::class);
     Route::resource('admin/pembayaran', PembayaranController::class);
-    Route::resource('admin/pembayaran/edit', PembayaranController::class);
+    Route::resource('admin/pemesanan',PemesananController::class);
 
 });
 

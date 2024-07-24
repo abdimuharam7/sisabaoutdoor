@@ -10,13 +10,11 @@ class PembayaranController extends Controller
     //
     public function index()
     {
-        $pemesanan = Pemesanan::all();
-        return view('admin.pembayaran.index',compact('pemesanan'));
+
     }
 
     public function edit(Pemesanan $pemesanan)
     {
-        return view('admin.pembayaran.index', compact('pemesanan'));
     }
 
     public function update(Request $request, Pemesanan $pemesanan)

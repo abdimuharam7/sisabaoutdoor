@@ -22,7 +22,8 @@ class PemesananController extends Controller
      */
     public function index()
     {
-        //
+        $pemesanan = Pemesanan::all();
+        return view('admin.pembayaran.index',compact('pemesanan'));
     }
 
     /**
@@ -87,10 +88,10 @@ class PemesananController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    //public function edit(Pemesanan $pemesanan)
-    //{
-      //  return view('pembayaran.edit', compact('pemesanan'));
-   // }
+    public function edit(Pemesanan $pemesanan)
+    {
+       return view('admin.pembayaran.edit', compact('pemesanan'));
+   }
 
     /**
      * Update the specified resource in storage.
@@ -99,23 +100,18 @@ class PemesananController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    //public function update(Request $request, Pemesanan $pemesanan)
-    //{
-        // Validasi input
-      //  $request->validate([
-        //    'status_penyewaan' => 'required|in:menunggu,disewa,selesai',
-          //  'status_pembayaran' => 'required|in:menunggu,dibayar,dibatalkan',
-       // ]);
+    public function update(Request $request, Pemesanan $pemesanan)
+    {
+    //    $request->validate([
+    //        'status_penyewaan' => 'required|in:menunggu,disewa,selesai',
+    //        'status_pembayaran' => 'required|in:menunggu,dibayar,dibatalkan',
+    //    ]);
 
-        // Update data pemesanan
-       // $pemesanan->update([
-        //    'status_penyewaan' => $request->input('status_penyewaan'),
-         //   'status_pembayaran' => $request->input('status_pembayaran'),
-      //  ]);
-
-        // Redirect ke halaman daftar pemesanan dengan pesan sukses
-       // return redirect()->route('pembayaran.index')->with('success', 'Data pemesanan berhasil diperbarui.');
-   // }
+            $pemesanan->status_penyewaan = $request->status_penyewaan;
+            $pemesanan->status_pembayaran = $request->status_pembayaran;
+            $pemesanan->save();
+           return redirect()->route('pemesanan.index')->with('success', 'Data pemesanan berhasil diperbarui.');
+   }
 
     /**
      * Remove the specified resource from storage.
