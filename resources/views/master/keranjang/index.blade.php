@@ -24,7 +24,7 @@
                     </li>
                 @endforeach
                 <li>
-                    <button data-modal-target="tambah-pemesanan" data-modal-toggle="tambah-pemesanan" type="button" class="py-1 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">Pesan Sekarang</button>
+                    <button data-modal-target="tambah-pemesanan" data-modal-toggle="tambah-pemesanan" type="button" class="py-1 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">Sewa Sekarang</button>
                     <x-modal.tambah-pemesanan></x-modal.tambah-pemesanan>
                 </li>
             </ul>

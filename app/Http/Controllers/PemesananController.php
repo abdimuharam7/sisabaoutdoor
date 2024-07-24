@@ -119,12 +119,12 @@ class PemesananController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-   // public function destroy(Pemesanan $pemesanan)
-   // {
-      //  $pemesanan->delete();
+   public function destroy(Pemesanan $pemesanan)
+        {
+        $pemesanan->delete();
 
-    //    return redirect()->route('pembayaran.index')->with('succes', 'data berhasil dihapus');
-  //  }
+        return redirect()->route('pemesanan.index')->with('succes', 'data berhasil dihapus');
+    }
 
     public function userPesanan()
     {

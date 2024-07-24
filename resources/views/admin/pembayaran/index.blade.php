@@ -49,7 +49,7 @@
                             <td class="py-1 px-2">
                                 <div class="flex gap-3 justify-center items-center">
                                     <a href="{{ route('pemesanan.edit', $item->id) }}" class="text-blue-500">Edit</a>
-                                    <form action="{{ route('pembayaran.destroy', $item->id) }}" method="post">
+                                    <form action="{{ route('pemesanan.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-500">Hapus</button>
