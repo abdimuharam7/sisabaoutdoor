@@ -17,7 +17,7 @@
                         <td>Durasi</td>
                         <td>Jaminan</td>
                         <td>Status</td>
-                        <td>Jenis Pembayaran</td>
+                        <td>Tipe Pembayaran</td>
                         <td>Status Pembayaran</td>
                         <td>Total</td>
                         <td>Aksi</td>
