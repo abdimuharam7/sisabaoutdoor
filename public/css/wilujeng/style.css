@@ -1,0 +1,136 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background: url('../../gambar/awan.jpeg') no-repeat center center fixed;
+    background-size: cover;
+}
+header {
+    background: rgba(0, 123, 94, 0.8); /* Hijau tua dengan transparansi */
+    color: white;
+    padding: 1.5em 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2em;
+}
+header img {
+    height: 100px; /* Ukuran logo diperbesar */
+}
+header h1 {
+    margin: 0;
+    font-size: 2.5em; /* Ukuran teks diperbesar */
+}
+nav {
+    background: rgba(0, 77, 64, 0.8); /* Hijau tua dengan transparansi */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 2em;
+    align-items: center;
+    position: relative;
+}
+nav a {
+    color: white;
+    margin: 0 1em;
+    text-decoration: none;
+}
+nav .menu {
+    display: flex;
+    align-items: center;
+}
+.button-login {
+    background-color: orange; /* Warna latar belakang */
+    color: white; /* Warna teks */
+    padding: 10px 20px; /* Padding untuk ruang dalam tombol */
+    border: none; /* Menghilangkan border default */
+    border-radius: 25px; /* Membuat sudut membulat */
+    font-size: 16px; /* Ukuran font */
+    cursor: pointer; /* Mengubah kursor menjadi pointer saat diarahkan */
+    transition: background-color 0.3s; /* Animasi transisi warna latar belakang */
+}
+
+.button-register {
+    background-color: orange; /* Warna latar belakang */
+    color: white; /* Warna teks */
+    padding: 10px 20px; /* Padding untuk ruang dalam tombol */
+    border: none; /* Menghilangkan border default */
+    border-radius: 25px; /* Membuat sudut membulat */
+    font-size: 16px; /* Ukuran font */
+    cursor: pointer; /* Mengubah kursor menjadi pointer saat diarahkan */
+    transition: background-color 0.3s; /* Animasi transisi warna latar belakang */
+}
+
+.button-login:hover {
+    background-color: #005f47; /* Warna latar belakang saat tombol dihover */
+}
+
+.button-register:hover {
+    background-color: #005f47; /* Warna latar belakang saat tombol dihover */
+}
+
+.button-login:focus {
+    outline: none; /* Menghilangkan outline saat tombol difokus */
+}
+
+main {
+    padding: 2em;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8); /* Latar belakang putih dengan transparansi */
+    margin: 2em;
+    border-radius: 10px;
+}
+.photos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 2em 0;
+}
+.photos img {
+    width: 18%;
+    margin: 1%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.services {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.service-item {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 1em;
+    margin: 1em;
+    width: 45%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.service-item h3 {
+    margin-top: 0;
+}
+footer {
+    background: rgba(0, 77, 64, 0.8); /* Hijau tua dengan transparansi */
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    position: relative;
+    width: 100%;
+}
+.contact {
+    margin-top: 2em;
+}
+.contact p {
+    margin: 0.5em 0;
+}
+.map {
+    margin: 2em 0;
+}
+.service-item ul {
+    text-align: left;
+    padding-left: 1em;
+}
+.service-item ul li {
+    margin: 0.5em 0;
+}
