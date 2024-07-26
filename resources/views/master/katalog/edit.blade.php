@@ -41,6 +41,13 @@
                     <x-input-error :messages="$errors->get('harga')" class="mt-2" />
                 </div>
 
+                <div>
+                    <x-input-label for="stok" :value="__('Deskripsi')" />
+                    <textarea name="deskripsi" id="deskripsi" rows="10" class="block mt-1 w-full rounded-lg border-gray-300"></textarea>
+                    <x-input-error :messages="$errors->get('deskripsi')" class="mt-2" />
+                </div>
+
+
                 <div class="text-right">
                     <x-primary-button class="ml-4">
                         {{ __('Update') }}
