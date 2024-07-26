@@ -17,8 +17,9 @@
                         <td>Durasi</td>
                         <td>Jaminan</td>
                         <td>Status</td>
-                        <td>Tipe Pembayaran</td>
+                        <td>Jenis Pembayaran</td>
                         <td>Status Pembayaran</td>
+                        <td>Invoice</td>
                         <td>Total</td>
                         <td>Aksi</td>
                     </tr>
@@ -35,6 +36,7 @@
                             <td>{{ $item->status_penyewaan }}</td>
                             <td>{{ $item->jenis_pembayaran }}</td>
                             <td>{{ $item->status_pembayaran }}</td>
+                            <td>{{ $item->Invoice }}</td>
                             <td>
                                 @php
                                     $total = 0;
