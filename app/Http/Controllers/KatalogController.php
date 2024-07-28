@@ -140,4 +140,13 @@ class KatalogController extends Controller
         $katalog->delete();
         return redirect()->route('katalog.index')->with('berhasil dihapus');
     }
+
+    public function json($id)
+    {
+
+        $data = Katalog::where('id', $id)->first();
+
+        return response()->json($data);
+
+    }
 }

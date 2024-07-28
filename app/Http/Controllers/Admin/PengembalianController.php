@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\ItemPemesanan;
+use App\Http\Controllers\Controller;
+use App\Models\Denda;
 use App\Models\Katalog;
+use App\Models\Pengembalian;
 use App\Models\Pemesanan;
+use App\Models\ItemPemesanan;
 use App\Models\User;
 use Duitku\Api;
 use Duitku\Config;
@@ -13,8 +16,8 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
-class PemesananController extends Controller
+use Carbon\Carbon;
+class PengembalianController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +26,8 @@ class PemesananController extends Controller
      */
     public function index()
     {
-        $pemesanan = Pemesanan::all();
-        return view('admin.pembayaran.index',compact('pemesanan'));
+        $pemesanan = Pengembalian::all();
+        return view('admin.pengembalian.index',compact('pemesanan'));
     }
 
     /**
@@ -35,10 +38,10 @@ class PemesananController extends Controller
     public function create()
     {
 
-        $konsumen = User::select('nama as label', 'id as value')->where('role', 'pelanggan')->get()->toArray();
-        $produk = Katalog::select('nama as label', 'id as value')->get()->toArray();
+        $pemesanan = Pemesanan::select('kode_transaksi as label', 'id as value')
+        ->where('status_penyewaan', 'diterima')->get()->toArray();
 
-        return view('admin.pembayaran.create',compact('konsumen', 'produk'));
+        return view('admin.pengembalian.create',compact('pemesanan'));
     }
 
     /**
@@ -49,31 +52,33 @@ class PemesananController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         $date = strtotime(date("Y-m-d H:i:s"));
-        $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
-        $pemesanan = new Pemesanan();
-        $pemesanan->kode_transaksi = $kode;
-        $pemesanan->tgl_penyewaan = $request->tgl_penyewaan;
-        $pemesanan->durasi = $request->durasi;
-        $pemesanan->jam_pengambilan = $request->jam_pengambilan;
-        $pemesanan->jaminan = $request->jaminan;
-        $pemesanan->user_id = Auth::user()->id;
-        $pemesanan->save();
+        $kode = IdGenerator::generate(['table' => 'pengembalians', 'field' => 'kode', 'length' => 17, 'prefix' => 'RTN-' . $date]);
+        $data = new Pengembalian();
+        $data->kode = $kode;
+        $data->pemesanan_id = $request->pemesanan_id;
+        $data->tgl = Carbon::parse($request->tgl);
+        $data->telat = $request->lambat;
+        $data->status = $request->status;
+        $data->total = $request->total;
+        $data->save();
 
-
-        foreach ($request->item as $item) {
-            $itemPesanan = new ItemPemesanan();
-            $itemPesanan->katalog_id = $item['id'];
-            $itemPesanan->pemesanan_id = $pemesanan->id;
-            $itemPesanan->jumlah = $item['jumlah'];
+        foreach ($request->lines as $item) {
+            $itemPesanan = new Denda();
+            $itemPesanan->pengembalian_id = $data->id;
+            $itemPesanan->pesan_item_id = $item['pesan_line_id'];
+            $itemPesanan->katalog_id = $item['produk_id'];
+            $itemPesanan->rusak_ringan = $item['rusak_ringan'];
+            $itemPesanan->rusak_sedang = $item['rusak_sedang'];
+            $itemPesanan->rusak_total = $item['rusak_total'];
+            $itemPesanan->hilang = $item['hilang'];
+            $itemPesanan->telat = $item['lambat'];
+            $itemPesanan->total = $item['denda'];
             $itemPesanan->save();
         }
 
-        foreach (Auth::user()->cart as $cart) {
-            $cart->delete();
-        }
         return redirect()->back()->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
@@ -94,11 +99,14 @@ class PemesananController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pemesanan $pemesanan)
+    public function edit($id)
     {
-       return view('admin.pembayaran.edit', compact('pemesanan'));
+        $data = Pengembalian::where('id', $id)->first();
+        $pemesanan = Pemesanan::select('kode_transaksi as label', 'id as value')
+        ->where('status_penyewaan', 'diterima')->get()->toArray();
+        $lines = ItemPemesanan::where('pemesanan_id', $data->pemesanan_id)->get();
+        return view('admin.pengembalian.edit', compact('data', 'pemesanan', 'lines'));
    }
-
     /**
      * Update the specified resource in storage.
      *

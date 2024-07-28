@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Denda extends Model
+class PengadaanItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'pengadaan_items';
     
     public function katalog()
     {
         return $this->belongsTo(Katalog::class);
-    }
-    
-    public function pesan_item()
-    {
-        return $this->belongsTo(ItemPemesanan::class, 'pesan_item_id');
     }
 }

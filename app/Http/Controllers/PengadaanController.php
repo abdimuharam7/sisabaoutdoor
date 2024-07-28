@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
-class PemesananController extends Controller
+class PengadaanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class PemesananController extends Controller
     public function index()
     {
         $pemesanan = Pemesanan::all();
-        return view('admin.pembayaran.index',compact('pemesanan'));
+        return view('admin.pengadaan.index',compact('pemesanan'));
     }
 
     /**
@@ -35,10 +35,9 @@ class PemesananController extends Controller
     public function create()
     {
 
-        $konsumen = User::select('nama as label', 'id as value')->where('role', 'pelanggan')->get()->toArray();
-        $produk = Katalog::select('nama as label', 'id as value')->get()->toArray();
+        $konsumen = User::where('role', 'pelanggan')->get();
 
-        return view('admin.pembayaran.create',compact('konsumen', 'produk'));
+        return view('admin.pengadaan.create',compact('konsumen'));
     }
 
     /**
@@ -49,7 +48,6 @@ class PemesananController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
 
         $date = strtotime(date("Y-m-d H:i:s"));
         $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
@@ -96,7 +94,7 @@ class PemesananController extends Controller
      */
     public function edit(Pemesanan $pemesanan)
     {
-       return view('admin.pembayaran.edit', compact('pemesanan'));
+       return view('admin.pengadaan.edit', compact('pemesanan'));
    }
 
     /**

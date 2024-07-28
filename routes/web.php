@@ -52,9 +52,45 @@ Route::middleware(['auth','role:admin'])->group(function () {
     })->name('admin.dashboard');
     Route::resource('admin/pelanggan',UserController::class);
     Route::resource('admin/katalog', KatalogController::class);
-    Route::resource('admin/pembayaran', PembayaranController::class);
-    Route::resource('admin/pemesanan',PemesananController::class);
+    // Route::resource('admin/pembayaran', PembayaranController::class);
+    // Route::resource('admin/pemesanan',PemesananController::class);
 
+    Route::namespace('App\Http\Controllers\Admin')->group(function(){
+    
+        Route::name('admin.')->prefix('/admin')->group(function () {
+
+            Route::get('/katalog/{id}/json', [KatalogController::class, 'json'])->name('katalog.json');
+
+            Route::name('pemesanan.')->prefix('/pemesanan')->group(function () {
+                Route::get('/', 'PemesananController@index')->name('index');
+                Route::get('/create', 'PemesananController@create')->name('create');
+                Route::post('/store', 'PemesananController@store')->name('store');
+                Route::get('/{id}/edit', 'PemesananController@edit')->name('edit');
+                Route::get('/{id}/json', 'PemesananController@json')->name('json');
+                Route::post('/{id}/update', 'PemesananController@update')->name('update');
+                Route::delete('/{id}/destroy', 'PemesananController@destroy')->name('destroy');
+            });
+
+            Route::name('pengembalian.')->prefix('/pengembalian')->group(function () {
+                Route::get('/', 'PengembalianController@index')->name('index');
+                Route::get('/create', 'PengembalianController@create')->name('create');
+                Route::post('/store', 'PengembalianController@store')->name('store');
+                Route::get('/{id}/edit', 'PengembalianController@edit')->name('edit');
+                Route::post('/{id}/update', 'PengembalianController@update')->name('update');
+                Route::delete('/{id}/destroy', 'PengembalianController@destroy')->name('destroy');
+            });
+
+            Route::name('pengadaan.')->prefix('/pengadaan')->group(function () {
+                Route::get('/', 'PengadaanController@index')->name('index');
+                Route::get('/create', 'PengadaanController@create')->name('create');
+                Route::post('/store', 'PengadaanController@store')->name('store');
+                Route::get('/{id}/edit', 'PengadaanController@edit')->name('edit');
+                Route::post('/{id}/update', 'PengadaanController@update')->name('update');
+                Route::delete('/{id}/destroy', 'PengadaanController@destroy')->name('destroy');
+            });
+        });
+    
+    });
 });
 
 // route pemilik
@@ -93,15 +129,13 @@ Route::middleware(['auth','role:pelanggan'])->group(function () {
 
 Route::get('/aturan', [AturanController::class, 'index'])->name('aturan');
 
-
-
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__.'/auth.php';
 
