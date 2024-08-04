@@ -65,6 +65,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
                 Route::get('/', 'PemesananController@index')->name('index');
                 Route::get('/create', 'PemesananController@create')->name('create');
                 Route::post('/store', 'PemesananController@store')->name('store');
+                Route::get('/{id}', 'PemesananController@show')->name('show');
                 Route::get('/{id}/edit', 'PemesananController@edit')->name('edit');
                 Route::get('/{id}/json', 'PemesananController@json')->name('json');
                 Route::post('/{id}/update', 'PemesananController@update')->name('update');
@@ -75,6 +76,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
                 Route::get('/', 'PengembalianController@index')->name('index');
                 Route::get('/create', 'PengembalianController@create')->name('create');
                 Route::post('/store', 'PengembalianController@store')->name('store');
+                Route::get('/{id}', 'PengembalianController@show')->name('show');
+                Route::get('/{id}/pdf', 'PengembalianController@pdf')->name('pdf');
                 Route::get('/{id}/edit', 'PengembalianController@edit')->name('edit');
                 Route::post('/{id}/update', 'PengembalianController@update')->name('update');
                 Route::delete('/{id}/destroy', 'PengembalianController@destroy')->name('destroy');
@@ -84,6 +87,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
                 Route::get('/', 'PengadaanController@index')->name('index');
                 Route::get('/create', 'PengadaanController@create')->name('create');
                 Route::post('/store', 'PengadaanController@store')->name('store');
+                Route::get('/{id}', 'PengadaanController@show')->name('show');
                 Route::get('/{id}/edit', 'PengadaanController@edit')->name('edit');
                 Route::post('/{id}/update', 'PengadaanController@update')->name('update');
                 Route::delete('/{id}/destroy', 'PengadaanController@destroy')->name('destroy');

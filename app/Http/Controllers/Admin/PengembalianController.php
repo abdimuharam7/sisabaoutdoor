@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
+use PDF;
 class PengembalianController extends Controller
 {
     /**
@@ -88,9 +89,13 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function show(Pemesanan $pemesanan)
+    public function show($id)
     {
-        //
+        $data = Pengembalian::where('id', $id)->first();
+        $pemesanan = Pemesanan::select('kode_transaksi as label', 'id as value')
+        ->where('status_penyewaan', 'diterima')->get()->toArray();
+        $lines = ItemPemesanan::where('pemesanan_id', $data->pemesanan_id)->get();
+        return view('admin.pengembalian.show', compact('data', 'pemesanan', 'lines'));
     }
 
     /**
@@ -133,97 +138,24 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-   public function destroy(Pemesanan $pemesanan)
+   public function destroy($id)
         {
-        $pemesanan->delete();
+            $data = Pengembalian::where('id', $id)->delete();
 
-        return redirect()->route('pemesanan.index')->with('succes', 'data berhasil dihapus');
+        return redirect()->route('admin.pengembalian.index')->with('succes', 'data berhasil dihapus');
     }
-
-    public function userPesanan()
+    
+    public function pdf($id)
     {
-        $pemesanan = Pemesanan::where('user_id', Auth::user()->id)->get();
-        return view('pesanan', compact('pemesanan'));
-    }
-    public function userCheckout($kode)
-    {
-        $pemesanan = Pemesanan::where('kode_transaksi', $kode)->first();
-        $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
-        $response = Api::getPaymentMethod(2000000, $duitkuConfig);
-        $jsonResponse = json_decode($response);
-        $paymentMethod = collect($jsonResponse->paymentFee);
-        return view('checkout', compact('pemesanan', 'paymentMethod'));
-    }
-    public function payment(Request $request, Pemesanan $pemesanan)
-    {
-        $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
+        $data = Pengembalian::where('id', $id)
+        ->first();
 
-        $items = [];
-        $amount = 0;
-        foreach ($pemesanan->item as $item) {
-            $price = $item->katalog->harga * $pemesanan->durasi;
-            $items[] = [
-                'name' => $item->katalog->nama,
-                'price' => $price*$item->jumlah,
-                'quantity' => $item->jumlah,
-            ];
+        $pdf = PDF::loadView('pdf.pengembalian', [
+            'data' => $data,
+        ], [ ], [
+            'format' => 'A4-P'
+        ]);
 
-            $amount += $price * $item->jumlah;
-        }
-
-        $params = array(
-            'paymentAmount' => $amount,
-            'paymentMethod' => $request->paymentMethod,
-            'merchantOrderId' => $pemesanan->kode_transaksi,
-            'productDetails' => 'Pembayaran Sewa Alat Outdoor',
-            'customerVaName' => Auth::user()->nama,
-            'email' => Auth::user()->email,
-            'phoneNumber' => Auth::user()->nomor_wa,
-            'itemDetails' => $items,
-            'returnUrl' => route('payment.check',$pemesanan->kode_transaksi),
-            'expiryPeriod' => 180,
-        );
-        try {
-            $response = Api::createInvoice($params, $duitkuConfig);
-            $json = json_decode($response);
-            if (isset($json->paymentUrl)) {
-                return Redirect::away($json->paymentUrl);
-            } else {
-                // Handle error response
-                return back()->withErrors(['msg' => 'Failed to create payment invoice.']);
-            }
-        } catch (Exception $e) {
-            // Handle exception
-            if($e->getMessage() == 'Duitku Error: 400 response: {"Message":"Bill already paid"}'){
-                $pemesanan->status_pembayaran = 'Dibayar';
-                $pemesanan->save();
-                return redirect()->route('user.pesanan');
-
-            }
-            dd($e->getMessage());
-        }
-    }
-    public function paymentCheck($code)
-    {
-        $pemesanan = Pemesanan::where('kode_transaksi', $code)->first();
-        $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
-        $response = Api::transactionStatus($code,$duitkuConfig);
-        $jsonResponse = json_decode($response);
-        $status = $jsonResponse->statusMessage;
-        if($status == 'PROCESS'){
-            $pemesanan->status_pembayaran = 'Menunggu';
-        }elseif($status == 'SUCCESS'){
-            $pemesanan->status_pembayaran = 'Dibayar';
-            foreach($pemesanan->item as $item)
-            {
-                $katalog = $item->katalog;
-                $katalog->stok = $katalog->stok - $item->jumlah;
-                $katalog->save();
-            }
-        }else{
-            $pemesanan->status_pembayaran = 'gagal';
-        }
-        $pemesanan->save();
-        return redirect()->route('user.pesanan');
+        return $pdf->stream('Pengembalian '. $data->nomor .'.pdf');
     }
 }

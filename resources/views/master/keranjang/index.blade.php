@@ -14,12 +14,16 @@
                                 </p>
                             </div>
                             <div class="flex gap-3 items-center justify-center">
-                                <button type="button">-</button>
-                                <input value="{{ $item->jumlah }}" type="number" class="w-12 rounded-lg h-min" name="item[{{ $item->id }}][jumlah]" id="">
+                                <button type="button" class="btn-dcm">-</button>
+                                <input value="{{ $item->katalog->harga }}" type="hidden" class="harga" />
+                                <input value="{{ $item->jumlah }}" type="number" class="w-12 rounded-lg h-min qty" name="item[{{ $item->id }}][jumlah]" id="">
                                 <input value="{{ $item->katalog->id }}" type="hidden" name="item[{{ $item->id }}][id]" id="">
-                                <button type="button">+</button>
+                                <button type="button" class="btn-inc">+</button>
                             </div>
-                            <p class="text-end">{{ $item->katalog->harga }}</p>
+                            <div class="total">
+                                <p class="text-end">{{ $item->katalog->harga }}</p>
+                                <p class="text-end" class="showTotal">{{ $item->katalog->harga }}</p>
+                            </div>
                         </div>
                     </li>
                 @endforeach
@@ -30,4 +34,55 @@
             </ul>
         </form>
     </div>
+
+    @push('scripts')
+    <script>
+
+            
+        function calculateTotal() {
+            // var total = 0;
+            $('.qty').each(function() {
+                var total =0;
+                var qty = parseInt($(this).val());
+                var harga = parseInt($(this).siblings('.harga').val());
+                if (!isNaN(qty) && !isNaN(harga)) {
+                    total += qty * harga;
+                }
+                $(this).closest('.total').find('.showTotal').text(total);
+            });
+        }
+        
+        $(document).ready(function() {
+            $("#tgl_penyewaan").flatpickr({
+                minDate : 'today',
+                maxDate: new Date().fp_incr(7),
+            });
+    // Increment
+            $('.btn-inc').click(function() {
+                var $qty = $(this).siblings('.qty');
+                var currentVal = parseInt($qty.val());
+                if (!isNaN(currentVal)) {
+                    $qty.val(currentVal + 1);
+                } else {
+                    $qty.val(0);
+                }
+                calculateTotal();
+            });
+
+            // Decrement
+            $('.btn-dcm').click(function() {
+                var $qty = $(this).siblings('.qty');
+                var currentVal = parseInt($qty.val());
+                if (!isNaN(currentVal) && currentVal > 0) {
+                    $qty.val(currentVal - 1);
+                } else {
+                    $qty.val(0);
+                }
+                calculateTotal();
+            });
+        });
+
+        calculateTotal();
+    </script>
+    @endpush
 </x-layouts.app>
