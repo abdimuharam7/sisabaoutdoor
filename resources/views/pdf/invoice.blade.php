@@ -53,72 +53,35 @@
         <br/>
         <table style="width:100%">
             <tr>
-                <td>Nama Penyewa</td>
+                <td>Pelanggan</td>
+                <td>: {{ $data->user->nama }}</td>
+                <td width="10%"></td>
+                <td>Nomor Sewa</td>
+                <td>: {{ $data->kode_transaksi }}</td>
             </tr>
         </table>
+        <br/>
+        <br/>
         <table class="table v-align-center table-bordered datatable w-100">
             <thead>
                 <tr>
-                    <th rowspan="2">#</th>
-                    <th rowspan="2">Produk</th>
-                    <th rowspan="2">Qty</th>
-                    <th colspan="3">Kerusakan</th>
-                    <th rowspan="2">Hilang</th>
-                    <th rowspan="2">Denda</th>
-                </tr>
-                <tr>
-                    <th>Ringan</th>
-                    <th>Sedang</th>
-                    <th>Total</th>
+                    <th>#</th>
+                    <th>Produk</th>
+                    <th>Qty</th>
+                    <th>Harga</th>
+                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data->denda as $d)
-                
-                @php
-                    $total = $d->total;
-                @endphp
-
-                    <tr>
-                        <td>
-                            {{ $loop->index+1}}
-                        </td>
-                        <td>
-                            {{ $d->katalog->nama }}<br />
-                            Rp. {{ number_format($d->katalog->harga, 0, ',', '.') }}
-                        </td>
-                        <td>
-                            {{ $d->pesanan->qty  ?? 0}}
-                        </td>
-                        <td>
-                            {{ $d->rusak_ringan  ?? 0}}
-                        </td>
-                        <td>
-                            {{ $d->rusak_sedang  ?? 0}}
-                        </td>
-                        <td>
-                            {{ $d->rusak_total  ?? 0}}
-                        </td>
-                        <td>
-                            {{ $d->hilang  ?? 0}}
-                        </td>
-                        <td>
-                            <span class="showDenda">Rp. {{ number_format($d->total,0,',','.') }}</span>
-                        </td>
+                @foreach ($data->item as $item)
+                    <tr class="row-{{ $loop->index }}">
+                        <td>{{ $loop->index+1 }}</td>
+                        <td>{{ $item->katalog->nama }}</td>
+                        <td>{{ $item->jumlah }}</td>
+                        <td>Rp. {{ number_format($item->katalog->harga,0,',','.') }}</td>
+                        <td>Rp. {{ number_format($item->katalog->harga* $item->jumlah,0,',','.') }}</td>
                     </tr>
                 @endforeach
-                {{-- @php
-                    $no = 1;
-                @endphp
-                    <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $data->produk->nama }}</td>
-                        <td>{{ $data->qty }} Unit</td>
-                        <td>{{ $data->lama }} Jam</td>
-                        <td>Rp {{ number_format($data->harga_unit,0,',','.') }}</td>
-                        <td>Rp {{ number_format($data->harga_operator,0,',','.') }}</td>
-                        <td>Rp {{ number_format($data->total,0,',','.') }}</td>
-                    </tr> --}}
             </tbody>
         </table>
         <br/>

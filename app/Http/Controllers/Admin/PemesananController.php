@@ -14,7 +14,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
+use PDF;
 class PemesananController extends Controller
 {
     /**
@@ -83,11 +83,8 @@ class PemesananController extends Controller
      */
     public function show($id)
     {
-        $data = Pemesanan::where('id', $data->id)->first();
-        $konsumen = User::select('nama as label', 'id as value')->where('role', 'pelanggan')->get()->toArray();
-        $produk = Katalog::select('nama as label', 'id as value')->get()->toArray();
-
-        return view('admin.pembayaran.edit', compact('data', 'konsumen', 'produk'));
+        $data = Pemesanan::where('id', $id)->first();
+        return view('admin.pembayaran.show', compact('data'));
     }
 
     /**
@@ -161,5 +158,20 @@ class PemesananController extends Controller
 
         return response()->json($data);
 
+    }
+
+    
+    public function pdf($id)
+    {
+        $data = Pemesanan::where('id', $id)
+        ->first();
+
+        $pdf = PDF::loadView('pdf.invoice', [
+            'data' => $data,
+        ], [ ], [
+            'format' => 'A4-P'
+        ]);
+
+        return $pdf->stream('Invoice '. $data->nomor .'.pdf');
     }
 }

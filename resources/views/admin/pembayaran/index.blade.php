@@ -49,15 +49,10 @@
                             <p> Rp. {{ number_format($total, 0, ',', '.') }}</p>
                         </td>
                         <td class="py-1 px-2">
-                            <div class="flex gap-3 justify-center items-center">
-                                <a href="{{ route('admin.pemesanan.edit', $item->id) }}" class="text-blue-500">Edit</a>
-                                <form action="{{ route('admin.pemesanan.destroy', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500">Hapus</button>
-
-                                </form>
-                            </div>
+                            
+                            <a href="{{ route('admin.pemesanan.show', $item->id) }}" class="bg-green-500 text-white rounded-lg px-5 py-2">
+                                Detail
+                            </a>
                         </td>
                     </tr>
                     @endforeach

@@ -66,6 +66,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
                 Route::get('/create', 'PemesananController@create')->name('create');
                 Route::post('/store', 'PemesananController@store')->name('store');
                 Route::get('/{id}', 'PemesananController@show')->name('show');
+                Route::get('/{id}/pdf', 'PemesananController@pdf')->name('pdf');
                 Route::get('/{id}/edit', 'PemesananController@edit')->name('edit');
                 Route::get('/{id}/json', 'PemesananController@json')->name('json');
                 Route::post('/{id}/update', 'PemesananController@update')->name('update');
