@@ -1,6 +1,6 @@
 <x-app-layout>
     <div>
-        <form method="POST" action="{{ route('pelanggan.store') }}">
+        <form method="POST" action="{{ route('admin.pelanggan.store') }}">
             @csrf
             @method('POST')
             <div class="grid grid-cols-2 gap-3">

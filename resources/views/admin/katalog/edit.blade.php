@@ -8,7 +8,7 @@
     <div class="relative">
         
         <div class="min-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <form method="POST" action="{{ route('katalog.update', $katalog->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.katalog.update', $katalog->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-2 gap-3">
 

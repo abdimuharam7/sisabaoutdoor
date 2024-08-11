@@ -5,9 +5,13 @@
             Data Katalog Saba
         </h2>
     </x-slot>
-    <div class="relative space-y-5">
-        <a href="{{ route('katalog.create') }}" class="bg-green-500 text-white rounded-lg px-5 py-2"> Tambah Katalog</a>
-        <div class>
+    <div class="relative">
+        <div class="min-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+            <div class="p-4 d-flex">
+            <a href="{{ route('admin.katalog.create') }}" class="bg-green-500 text-white rounded-lg px-5 py-2"> Tambah Katalog</a>
+            </div>
+            <div class>
             <table class="w-full dataTable">
                 <thead class="bg-green-500 text-white">
                     <tr>
@@ -33,8 +37,8 @@
                             </td>
                             <td class="py-1 px-2">
                                 <div class="flex gap-3 justify-center items-center">
-                                    <a href="{{ route('katalog.edit', $item->id) }}" class="text-blue-500">Edit</a>
-                                    <form action="{{ route('katalog.destroy', $item->id) }}" method="post">
+                                    <a href="{{ route('admin.katalog.edit', $item->id) }}" class="text-blue-500">Edit</a>
+                                    <form action="{{ route('admin.katalog.destroy', $item->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-500">Hapus</button>
@@ -63,24 +67,11 @@
                 </tfoot>
             </table>
         </div>
+        </div>
     </div>
 </x-app-layout>
 <script>
     $(document).ready(function() {
-        $('.dataTable').DataTable({
-            searching: true,
-            info: false,
-            lengthChange: false,
-            paging: true,
-            dom: 'Bfrtip',
-            buttons: [
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [0,1,2,3]
-                }
-            }
-        ]
-        });
+        $('.dataTable').DataTable();
     })
 </script>

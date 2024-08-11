@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use App\Models\Katalog;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class KatalogController extends Controller
         //
         $katalog = Katalog::all();
 
-        return view("master.katalog.index", compact('katalog'));
+        return view("admin.katalog.index", compact('katalog'));
     }
 
     /**
@@ -29,7 +30,7 @@ class KatalogController extends Controller
     public function create()
     {
         //
-        return view('master.katalog.create');
+        return view('admin.katalog.create');
     }
 
     /**
@@ -86,7 +87,7 @@ class KatalogController extends Controller
      */
     public function edit(Katalog $katalog)
     {
-        return view('master.katalog.edit', compact('katalog'));
+        return view('admin.katalog.edit', compact('katalog'));
     }
 
     /**

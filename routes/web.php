@@ -45,19 +45,26 @@ Route::get('/dashboard', function () {
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// route admin
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard',function(){
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-    Route::resource('admin/pelanggan',UserController::class);
-    Route::resource('admin/katalog', KatalogController::class);
-    // Route::resource('admin/pembayaran', PembayaranController::class);
-    // Route::resource('admin/pemesanan',PemesananController::class);
 
-    Route::namespace('App\Http\Controllers\Admin')->group(function(){
+Route::namespace('App\Http\Controllers\Admin')->group(function(){
     
-        Route::name('admin.')->prefix('/admin')->group(function () {
+    Route::name('admin.')->prefix('/admin')->group(function () {
+
+        Route::middleware('guest:admin')->group(function () {
+            Route::get('/','LoginController@showLoginForm')->name('login');
+            Route::get('/login','LoginController@showLoginForm')->name('login');
+            Route::post('/login','LoginController@login');
+        });
+        
+        Route::middleware(['auth:admin'])->group(function () {
+            Route::post('/logout','LoginController@logout')->name('logout');
+            Route::get('/dashboard',function(){
+                return view('admin.dashboard');
+            })->name('dashboard');
+
+            // Route::resource('/pelanggan', UserController::class);
+            Route::resource('/pelanggan','UserController');
+            Route::resource('/katalog', 'KatalogController');
 
             Route::get('/katalog/{id}/json', [KatalogController::class, 'json'])->name('katalog.json');
 
@@ -93,11 +100,15 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/{id}/update', 'PengadaanController@update')->name('update');
                 Route::delete('/{id}/destroy', 'PengadaanController@destroy')->name('destroy');
             });
-        });
-    
-    });
-});
 
+            
+            Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
+            Route::patch('/profile', 'ProfileController@update')->name('profile.update');
+            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        });
+    });
+
+});
 // route pemilik
 Route::middleware(['auth','role:pemilik'])->group(function () {
     Route::get('/pemilik/dashboard',function(){

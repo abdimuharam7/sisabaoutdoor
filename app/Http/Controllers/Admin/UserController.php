@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,11 +21,11 @@ class UserController extends Controller
         })->paginate(3);
 
         $pelanggan = User::where('role', 'pelanggan')->get();
-        return view("master.pelanggan.index", compact('pelanggan'));
+        return view("admin.pelanggan.index", compact('pelanggan'));
     }
     public function create()
     {
-        return view('master.pelanggan.create');
+        return view('admin.pelanggan.create');
     }
 
     public function store(Request $request)
@@ -56,7 +57,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $pelanggan = User::find($id);
-        return view('master.pelanggan.edit',compact('pelanggan'));
+        return view('admin.pelanggan.edit',compact('pelanggan'));
     }
     public function update(Request $request, $id){
         $request->validate([

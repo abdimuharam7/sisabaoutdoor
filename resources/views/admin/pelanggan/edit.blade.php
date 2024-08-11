@@ -1,6 +1,6 @@
 <x-app-layout>
     <div>
-        <form method="POST" action="{{ route('pelanggan.update',$pelanggan->id) }}">
+        <form method="POST" action="{{ route('admin.pelanggan.update',$pelanggan->id) }}">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-2 gap-3">

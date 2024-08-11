@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-
+use Storage;
 class RegisteredUserController extends Controller
 {
     /**
@@ -37,6 +37,7 @@ class RegisteredUserController extends Controller
             'alamat_ktp'=>['required','string', 'max:255'],
             'alamat_domisili'=>['required','string', 'max:255'],
             'tgl_lahir'=>['required','date'],
+            'ktp' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string','min:8','confirmed', Rules\Password::defaults()],
         ]);
@@ -50,8 +51,13 @@ class RegisteredUserController extends Controller
         $user->tgl_lahir = $request->tgl_lahir;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        if ($request->hasFile('ktp')) {
+            $file = $request->file('ktp');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/ktp'), $fileName);
+            $user->ktp = $fileName;
+        }
         $user->save();
-
         event(new Registered($user));
 
         Auth::login($user);

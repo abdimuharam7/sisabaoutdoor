@@ -75,6 +75,7 @@ class PemesananController extends Controller
         foreach (Auth::user()->cart as $cart) {
             $cart->delete();
         }
+        
         return redirect()->back()->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
