@@ -79,6 +79,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/{id}/json', 'PemesananController@json')->name('json');
                 Route::post('/{id}/update', 'PemesananController@update')->name('update');
                 Route::delete('/{id}/destroy', 'PemesananController@destroy')->name('destroy');
+                Route::post('/{id}/bayar', 'PemesananController@bayar')->name('bayar');
             });
 
             Route::name('pengembalian.')->prefix('/pengembalian')->group(function () {
@@ -111,20 +112,6 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
         });
     });
 
-});
-// route pemilik
-Route::middleware(['auth','role:pemilik'])->group(function () {
-    Route::get('/pemilik/dashboard',function(){
-        return view('pemilik.dashboard');
-    })->name('pemilik.dashboard');
-});
-
-// route logistik
-Route::middleware(['auth','role:logistik'])->group(function () {
-    Route::get('/logistik/dashboard',function(){
-        return view('logistik.dashboard');
-    })->name('logistik.dashboard');
-    Route::resource('logistik/pengembalian', KatalogController::class);
 });
 
 //route pelanggan

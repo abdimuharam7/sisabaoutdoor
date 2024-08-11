@@ -1,7 +1,12 @@
 <html>
 
 <head>
-    <title>Invoice {{ $data->kode_transaksi }}</title>
+    <title>
+        @if(request()->get('type') == 'invoice')
+            INVOICE
+        @else
+            BUKTI TERIMA BARANG
+        @endif {{ $data->kode_transaksi }}</title>
 
     <link rel="stylesheet" href="/css/bootstrap.css">
 
@@ -46,8 +51,12 @@
             </tr>
         </table>
         <hr/>
-        <h1 style="text-align:center;margin-bottom: 5px;font-size:16pt;font-weight: 600;">
-            INVOICE
+        <h1 style="text-align:center;margin-bottom: 5px;font-size:16pt;font-weight: bold;">
+            @if(request()->get('type') == 'invoice')
+                INVOICE
+            @else
+                BUKTI TERIMA BARANG
+            @endif
         </h1>
         <br/>
         <br/>
@@ -58,6 +67,20 @@
                 <td width="10%"></td>
                 <td>Nomor Sewa</td>
                 <td>: {{ $data->kode_transaksi }}</td>
+            </tr>
+            <tr>
+                <td>Tgl Sewa</td>
+                <td>: {{ \Carbon\Carbon::parse($data->tgl_penyewaan)->translatedFormat('d F Y') }}</td>
+                <td width="10%"></td>
+                <td>Waktu Pengambilan</td>
+                <td>: {{ \Carbon\Carbon::parse($data->jam_pengambilan)->translatedFormat('H:i') }} WIB</td>
+            </tr>
+            <tr>
+                <td>Lama Sewa</td>
+                <td>: {{ $data->durasi }} Hari</td>
+                <td width="10%"></td>
+                <td>Status Sewa</td>
+                <td>: {{ $data->status_penyewaan }}</td>
             </tr>
         </table>
         <br/>
@@ -73,6 +96,9 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total = 0;
+                @endphp
                 @foreach ($data->item as $item)
                     <tr class="row-{{ $loop->index }}">
                         <td>{{ $loop->index+1 }}</td>
@@ -81,6 +107,9 @@
                         <td>Rp. {{ number_format($item->katalog->harga,0,',','.') }}</td>
                         <td>Rp. {{ number_format($item->katalog->harga* $item->jumlah,0,',','.') }}</td>
                     </tr>
+                    @php
+                        $total +=  $item->katalog->harga* $item->jumlah;
+                    @endphp
                 @endforeach
             </tbody>
         </table>
@@ -89,7 +118,7 @@
             <tr>
                 <td width="60%"></td>
                 <td>Total</td>
-                <td>Rp. {{ number_format($data->total,0,',','.') }}</td>
+                <td>Rp. {{ number_format($total,0,',','.') }}</td>
             </tr>
         </table>
     </div>

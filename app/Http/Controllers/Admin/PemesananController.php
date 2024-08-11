@@ -111,8 +111,6 @@ class PemesananController extends Controller
      */
     public function update($id, Request $request)
     {
-        // dd($request->all());
-
         $pemesanan = Pemesanan::where('id', $id)->first();
         $pemesanan->tgl_penyewaan = $request->tgl;
         $pemesanan->durasi = $request->lama;
@@ -136,6 +134,21 @@ class PemesananController extends Controller
            return redirect()->route('admin.pemesanan.index')->with('success', 'Data pemesanan berhasil diperbarui.');
    }
 
+   public function bayar($id, Request $request)
+   {
+       $pemesanan = Pemesanan::where('id', $id)->first();
+       $pemesanan->status_pembayaran = $request->status;
+       $pemesanan->save();
+
+       if($request->status == 'Dibayar'){
+        foreach ($pemesanan->item as $item) {
+            $itemPesanan = Katalog::where('id', $item->katalog_id)->first();
+            $itemPesanan->stok -= $item->jumlah;
+            $itemPesanan->save();
+        }
+       }
+        return redirect()->back()->with('success', 'Data pemesanan berhasil diperbarui.');
+  }
     /**
      * Remove the specified resource from storage.
      *
@@ -146,7 +159,7 @@ class PemesananController extends Controller
         {
         $pemesanan->delete();
 
-        return redirect()->route('pemesanan.index')->with('succes', 'data berhasil dihapus');
+        return redirect()->route('admin.pemesanan.index')->with('succes', 'data berhasil dihapus');
     }
     
     public function json($id)
@@ -192,6 +205,5 @@ class PemesananController extends Controller
         ], [ ], $config);
 
         return $pdf->stream('Laporan Pesanan.pdf');
-
     }
 }
