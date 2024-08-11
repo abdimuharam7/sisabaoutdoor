@@ -32,9 +32,14 @@
                     <p>{{ $katalog->stok }}</p>
                 </div>
                 <div class="flex gap-1">
+                    <p class="w-[65px] flex-none">Satuan</p>
+                    <p>:</p>
+                    <p>{{ $katalog->satuan }}</p>
+                </div>
+                <div class="flex gap-1">
                     <p class="w-[65px] flex-none">Harga</p>
                     <p>:</p>
-                    <p>{{ $katalog->harga }}</p>
+                    <p>Rp. {{ number_format($katalog->harga,0,',','.') }}</p>
                 </div>
                 <div class="flex gap-1">
                     <p class="w-[65px] flex-none">Deskripsi</p>

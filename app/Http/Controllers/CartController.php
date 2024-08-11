@@ -51,7 +51,7 @@ class CartController extends Controller
             $cart->save();
         }
 
-        return redirect()->back()->with(['success' => 'Berhasil Menambahkan Ke Keranjang']);
+        return redirect()->route('keranjang.index')->with(['success' => 'Berhasil Menambahkan Ke Keranjang']);
     }
 
     /**

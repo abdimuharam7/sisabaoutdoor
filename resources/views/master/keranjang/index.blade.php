@@ -31,11 +31,16 @@
                         </li>
                     @endforeach
                 </ul>
-                <button data-modal-target="tambah-pemesanan" data-modal-toggle="tambah-pemesanan" type="button" class="py-3 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">
-                    Sewa Sekarang
-                </button>
-                <x-modal.tambah-pemesanan></x-modal.tambah-pemesanan>
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="{{ route('katalog') }}" class="py-3 text-center bg-blue-500 text-white w-full rounded-lg hover:bg-opacity-90">
+                        Tambahkan Barang Lain
+                    </a>
+                    <button data-modal-target="tambah-pemesanan" data-modal-toggle="tambah-pemesanan" type="button" class="py-3 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">
+                        Sewa Sekarang
+                    </button>
+                </div>
             </div>
+            <x-modal.tambah-pemesanan></x-modal.tambah-pemesanan>
         </form>
     </div>
 

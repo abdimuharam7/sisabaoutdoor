@@ -76,7 +76,7 @@ class PemesananController extends Controller
             $cart->delete();
         }
         
-        return redirect()->back()->with(['success' => 'Berhasil Membuat Pesanan']);
+        return redirect()->route('user.pesanan')->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
     /**
@@ -150,53 +150,63 @@ class PemesananController extends Controller
     }
     public function payment(Request $request, Pemesanan $pemesanan)
     {
-        $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
-
-        $items = [];
-        $amount = 0;
-        foreach ($pemesanan->item as $item) {
-            $price = $item->katalog->harga * $pemesanan->durasi;
-            $items[] = [
-                'name' => $item->katalog->nama,
-                'price' => $price*$item->jumlah,
-                'quantity' => $item->jumlah,
-            ];
-
-            $amount += $price * $item->jumlah;
-        }
-
-        $params = array(
-            'paymentAmount' => $amount,
-            'paymentMethod' => $request->paymentMethod,
-            'merchantOrderId' => $pemesanan->kode_transaksi,
-            'productDetails' => 'Pembayaran Sewa Alat Outdoor',
-            'customerVaName' => Auth::user()->nama,
-            'email' => Auth::user()->email,
-            'phoneNumber' => Auth::user()->nomor_wa,
-            'itemDetails' => $items,
-            'returnUrl' => route('payment.check',$pemesanan->kode_transaksi),
-            'expiryPeriod' => 180,
-        );
-        try {
-            $response = Api::createInvoice($params, $duitkuConfig);
-            $json = json_decode($response);
-            if (isset($json->paymentUrl)) {
-                return Redirect::away($json->paymentUrl);
-            } else {
-                // Handle error response
-                return back()->withErrors(['msg' => 'Failed to create payment invoice.']);
+        // dd($request->all());
+        if($request->paymentMethod == 'Cash'){
+            $pemesanan->status_penyewaan = 'Menunggu';
+            $pemesanan->status_pembayaran = 'Menunggu';
+            $pemesanan->save();
+            return redirect()->route('user.pesanan');
+        }else{
+            $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
+            
+            $items = [];
+            $amount = 0;
+            foreach ($pemesanan->item as $item) {
+                $price = $item->katalog->harga * $pemesanan->durasi;
+                $items[] = [
+                    'name' => $item->katalog->nama,
+                    'price' => $price*$item->jumlah,
+                    'quantity' => $item->jumlah,
+                ];
+    
+                $amount += $price * $item->jumlah;
             }
-        } catch (Exception $e) {
-            // Handle exception
-            if($e->getMessage() == 'Duitku Error: 400 response: {"Message":"Bill already paid"}'){
-                $pemesanan->status_pembayaran = 'Dibayar';
-                $pemesanan->save();
-                return redirect()->route('user.pesanan');
-
+    
+            $params = array(
+                'paymentAmount' => $amount,
+                'paymentMethod' => $request->paymentMethod,
+                'merchantOrderId' => $pemesanan->kode_transaksi,
+                'productDetails' => 'Pembayaran Sewa Alat Outdoor',
+                'customerVaName' => Auth::user()->nama,
+                'email' => Auth::user()->email,
+                'phoneNumber' => Auth::user()->nomor_wa,
+                'itemDetails' => $items,
+                'returnUrl' => route('payment.check',$pemesanan->kode_transaksi),
+                'expiryPeriod' => 180,
+            );
+            try {
+                $response = Api::createInvoice($params, $duitkuConfig);
+                $json = json_decode($response);
+                if (isset($json->paymentUrl)) {
+                    return Redirect::away($json->paymentUrl);
+                } else {
+                    // Handle error response
+                    return back()->withErrors(['msg' => 'Failed to create payment invoice.']);
+                }
+            } catch (Exception $e) {
+                // Handle exception
+                if($e->getMessage() == 'Duitku Error: 400 response: {"Message":"Bill already paid"}'){
+                    $pemesanan->status_pembayaran = 'Dibayar';
+                    $pemesanan->save();
+                    return redirect()->route('user.pesanan');
+    
+                }
+                dd($e->getMessage());
             }
-            dd($e->getMessage());
         }
+        
     }
+
     public function paymentCheck($code)
     {
         $pemesanan = Pemesanan::where('kode_transaksi', $code)->first();
