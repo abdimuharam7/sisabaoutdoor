@@ -71,6 +71,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
             Route::name('pemesanan.')->prefix('/pemesanan')->group(function () {
                 Route::get('/', 'PemesananController@index')->name('index');
                 Route::get('/create', 'PemesananController@create')->name('create');
+                Route::get('/report', 'PemesananController@report')->name('report');
                 Route::post('/store', 'PemesananController@store')->name('store');
                 Route::get('/{id}', 'PemesananController@show')->name('show');
                 Route::get('/{id}/pdf', 'PemesananController@pdf')->name('pdf');
@@ -84,6 +85,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/', 'PengembalianController@index')->name('index');
                 Route::get('/create', 'PengembalianController@create')->name('create');
                 Route::post('/store', 'PengembalianController@store')->name('store');
+                Route::get('/report', 'PengembalianController@report')->name('report');
                 Route::get('/{id}', 'PengembalianController@show')->name('show');
                 Route::get('/{id}/pdf', 'PengembalianController@pdf')->name('pdf');
                 Route::get('/{id}/edit', 'PengembalianController@edit')->name('edit');
@@ -95,6 +97,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/', 'PengadaanController@index')->name('index');
                 Route::get('/create', 'PengadaanController@create')->name('create');
                 Route::post('/store', 'PengadaanController@store')->name('store');
+                Route::get('/report', 'PengadaanController@report')->name('report');
                 Route::get('/{id}', 'PengadaanController@show')->name('show');
                 Route::get('/{id}/edit', 'PengadaanController@edit')->name('edit');
                 Route::post('/{id}/update', 'PengadaanController@update')->name('update');

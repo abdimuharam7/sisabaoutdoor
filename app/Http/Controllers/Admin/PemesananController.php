@@ -174,4 +174,24 @@ class PemesananController extends Controller
 
         return $pdf->stream('Invoice '. $data->nomor .'.pdf');
     }
+
+    
+    public function report(Request $request)
+    {
+        $tgl = explode(" - ",$request->tgl);
+        $data = Pemesanan::with(['user'])
+        ->whereBetween('tgl_penyewaan', $tgl)
+        ->latest()->get();
+        $config = [
+            'format' => 'A4-L' // Landscape
+        ];
+
+        $pdf = PDF::loadView('pdf.pemesanan', [
+            'data' => $data,
+            'tgl' =>$tgl
+        ], [ ], $config);
+
+        return $pdf->stream('Laporan Pesanan.pdf');
+
+    }
 }

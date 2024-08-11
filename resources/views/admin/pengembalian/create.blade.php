@@ -57,6 +57,9 @@
                                 Kehilangan
                             </th>
                             <th scope="col" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                                Keterangan
+                            </th>
+                            <th scope="col" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
                                 Denda
                             </th>
                         </tr>
@@ -72,13 +75,12 @@
                             </th>
                         </tr>
                     </thead>
-                    
                     <tbody class="divide-y divide-gray-300">
 
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6"
+                            <td colspan="7"
                                 class="dark:text-neutral-200 font-bold px-3 py-2 text-end text-gray-800 text-lg whitespace-nowrap">
                                 Total Denda
                             </td>
@@ -150,11 +152,14 @@
                                 <x-text-input id="field-hilang" class="block mt-1 w-full line-hilang" type="number" min="0" value="0" name="lines[${idx}][hilang]"/>
                             </td>
                             <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                <x-text-input id="field-keterangan" class="block mt-1 w-full" type="text" name="lines[${idx}][keterangan]"/>
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
                                 <span class="showDenda">${ currency(denda)}</span>
                                 <input type="hidden" name="lines[${idx}][pesan_line_id]" value="${ item.id }"/>
                                 <input type="hidden" name="lines[${idx}][produk_id]" class="line-produk_id" value="${ item.katalog_id }"/>
                                 <input type="hidden" name="lines[${idx}][denda]" class="line-denda" value="${ denda }"/>
-                                <input type="hidden" name="lines[${idx}][harga]" class="line-harga"  value="${item.katalog.harga}"/>
+                                <input type="hidden" name="lines[${idx}][harga]" class="line-harga"  value="${item.katalog.harga_beli}"/>
                                 <input type="hidden" name="lines[${idx}][normal]" class="line-normal"  value="${item.jumlah}"/>
                                 <input type="hidden" name="lines[${idx}][lambat]" class="line-lambat" value="${ denda }"/>
                             </td>

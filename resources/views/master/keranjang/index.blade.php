@@ -82,7 +82,7 @@
                 maxDate: new Date().fp_incr(7),
             });
 
-            $("#field-waktu").flatpickr({
+            $("#jam_pengambilan").flatpickr({
                 enableTime: true,
                 noCalendar: true,
                 dateFormat: "H:i",

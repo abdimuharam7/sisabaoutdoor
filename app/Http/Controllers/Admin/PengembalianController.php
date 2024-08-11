@@ -158,4 +158,22 @@ class PengembalianController extends Controller
 
         return $pdf->stream('Pengembalian '. $data->nomor .'.pdf');
     }
+
+    
+    public function report(Request $request)
+    {
+        $tgl = explode(" - ",$request->tgl);
+        $data = Pengembalian::whereBetween('tgl', $tgl)->get();
+        $config = [
+            'format' => 'A4-L' // Landscape
+        ];
+
+        $pdf = PDF::loadView('pdf.pengembalian_report', [
+            'data' => $data,
+            'tgl' =>$tgl
+        ], [ ], $config);
+
+        return $pdf->stream('Laporan Pengembalian.pdf');
+
+    }
 }

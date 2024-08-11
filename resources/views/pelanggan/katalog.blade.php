@@ -15,7 +15,10 @@
 
                 </x-modal.show-deskripsi>
                 <p>Rp. {{ number_format($item->harga,0,',','.') }}</p>
-                <p class="text-xs">{{ $item->stok }} Stok Tersedia</p>
+                <div class="flex justify-between">
+                    <p class="text-xs">{{ $item->stok }} Stok Tersedia</p>
+                    <p class="text-xs">{{ $item->satuan }}</p>
+                </div>
                 <form action="{{ route('keranjang.store', $item->id) }}" method="POST">
                     @csrf
                     @method('POST')
@@ -28,4 +31,7 @@
         @endforeach
 
     </div>
+    
 </x-layouts.app>
+<script>
+</script>

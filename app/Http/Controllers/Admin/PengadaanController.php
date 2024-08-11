@@ -14,7 +14,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
+use PDF;
 class PengadaanController extends Controller
 {
     /**
@@ -151,11 +151,29 @@ class PengadaanController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-   public function destroy(Pemesanan $pemesanan)
+   public function destroy(Pengadaan $data)
         {
-        $pemesanan->delete();
+        $data->delete();
 
-        return redirect()->route('pemesanan.index')->with('succes', 'data berhasil dihapus');
+        return redirect()->route('admin.pengadaan.index')->with('succes', 'data berhasil dihapus');
+    }
+
+    
+    public function report(Request $request)
+    {
+        $tgl = explode(" - ",$request->tgl);
+        $data = Pengadaan::whereBetween('tgl', $tgl)->get();
+        $config = [
+            'format' => 'A4-L' // Landscape
+        ];
+
+        $pdf = PDF::loadView('pdf.pengadaan', [
+            'data' => $data,
+            'tgl' =>$tgl
+        ], [ ], $config);
+
+        return $pdf->stream('Laporan Pengadaan.pdf');
+
     }
     
 }
