@@ -102,6 +102,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/{id}', 'PengadaanController@show')->name('show');
                 Route::get('/{id}/edit', 'PengadaanController@edit')->name('edit');
                 Route::post('/{id}/update', 'PengadaanController@update')->name('update');
+                Route::post('/{id}/status', 'PengadaanController@status')->name('status');
                 Route::delete('/{id}/destroy', 'PengadaanController@destroy')->name('destroy');
             });
 

@@ -63,7 +63,7 @@ class PengadaanController extends Controller
         $data->kode = $kode;
         $data->tgl = $request->tgl;
         $data->supplier = $request->supplier;
-        $data->status = $request->status;
+        $data->status = 'pending';
         $data->save();
 
         foreach ($request->lines as $item) {
@@ -78,6 +78,21 @@ class PengadaanController extends Controller
         return redirect()->back()->with(['success' => 'Berhasil Membuat Pengajuan Pengadaan']);
     }
 
+    public function status($id, Request $request)
+    {
+        $data = Pengadaan::where('id', $id)->first();
+        $data->status = $request->status;
+        $data->save();
+ 
+        if($request->status == 'diterima'){
+         foreach ($data->item as $item) {
+             $itemPesanan = Katalog::where('id', $item->katalog_id)->first();
+             $itemPesanan->stok += $item->jumlah;
+             $itemPesanan->save();
+         }
+        }
+         return redirect()->back()->with('success', 'Data pemesanan berhasil diperbarui.');
+   }
     /**
      * Display the specified resource.
      *
@@ -86,11 +101,9 @@ class PengadaanController extends Controller
      */
     public function show($id)
     {
-        $data = Pengadaan::where('id', $data->id)->first();
-        $konsumen = User::select('nama as label', 'id as value')->where('role', 'pelanggan')->get()->toArray();
-        $produk = Katalog::select('nama as label', 'id as value')->get()->toArray();
+        $data = Pengadaan::where('id', $id)->first();
 
-        return view('admin.pengadaan.edit', compact('data', 'konsumen', 'produk'));
+        return view('admin.pengadaan.show', compact('data'));
     }
 
     /**
