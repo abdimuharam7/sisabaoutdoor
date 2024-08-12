@@ -58,9 +58,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
         
         Route::middleware(['auth:admin'])->group(function () {
             Route::post('/logout','LoginController@logout')->name('logout');
-            Route::get('/dashboard',function(){
-                return view('admin.dashboard');
-            })->name('dashboard');
+            Route::get('/dashboard','DashboardController@index')->name('dashboard');
 
             // Route::resource('/pelanggan', UserController::class);
             Route::resource('/pelanggan','UserController');
