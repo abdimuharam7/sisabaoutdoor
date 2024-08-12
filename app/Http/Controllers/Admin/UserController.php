@@ -59,7 +59,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('pelanggan.index')->with('success','Berhasil');
+        return redirect()->route('admin.pelanggan.index')->with('success','Berhasil');
     }
     public function edit($id)
     {
@@ -96,13 +96,13 @@ class UserController extends Controller
         }
         $user->save();
 
-        return redirect()->route('pelanggan.index')->with('success','Berhasil');
+        return redirect()->route('admin.pelanggan.index')->with('success','Berhasil');
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('pelanggan.index')->with('success','Berhasil');
+        return redirect()->route('admin.pelanggan.index')->with('success','Berhasil');
     }
 }

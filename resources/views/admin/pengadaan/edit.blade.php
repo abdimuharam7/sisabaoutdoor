@@ -2,7 +2,7 @@
     <x-slot name="header">
         <!-- Header content goes here -->
         <h2 class="font-semibold text-xl text-black-800 leading-tight">
-            Edit Data Pengadaan
+            Edit Data Pembelian
         </h2>
     </x-slot>
         <div class="relative">

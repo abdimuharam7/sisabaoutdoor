@@ -65,7 +65,7 @@ class KatalogController extends Controller
         $katalog->save();
 
 
-        return redirect()->route('katalog.index')->with('success', 'Katalog berhasil ditambahkan');
+        return redirect()->route('admin.katalog.index')->with('success', 'Katalog berhasil ditambahkan');
     }
 
     /**
@@ -123,7 +123,7 @@ class KatalogController extends Controller
         }
         $katalog->save();
 
-        return redirect()->route('katalog.index')->with('success', 'Katalog berhasil diupdate');
+        return redirect()->route('admin.katalog.index')->with('success', 'Katalog berhasil diupdate');
     }
 
     /**
@@ -139,7 +139,7 @@ class KatalogController extends Controller
             unlink($pathRemove);
         }
         $katalog->delete();
-        return redirect()->route('katalog.index')->with('berhasil dihapus');
+        return redirect()->route('admin.katalog.index')->with('berhasil dihapus');
     }
 
     public function json($id)

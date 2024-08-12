@@ -26,7 +26,7 @@
         <div style="width:100%; padding:1px;background:black; margin-top:4px;"></div>
         <br/>
         <br/>
-        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN PENGADAAN</h2>
+        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN PEMBELIAN</h2>
         <h2 class="h4 text-center" style="font-weight: bold; margin-top:0px">
             Periode : {{ \Carbon\Carbon::parse($tgl[0])->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($tgl[1])->translatedFormat('d F Y') }}
         </h2>
