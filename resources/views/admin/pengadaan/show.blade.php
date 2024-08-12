@@ -10,10 +10,10 @@
         <div class="min-w-full py-4 bg-white border border-gray-200 rounded-lg shadow">
             <div class="px-4 pb-4 grid grid-cols-2 gap-3">
                 <div class="flex">
-                    <a href="{{ route('admin.pemesanan.edit', $data->id) }}" class="bg-green-500 mx-3 me-3 text-white rounded-lg px-5 py-2">
+                    <a href="{{ route('admin.pengadaan.edit', $data->id) }}" class="bg-green-500 mx-3 me-3 text-white rounded-lg px-5 py-2">
                         Ubah
                     </a>
-                    <form action="{{ route('admin.pemesanan.destroy', $data->id) }}" method="post">
+                    <form action="{{ route('admin.pengadaan.destroy', $data->id) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="bg-red-500 text-white rounded-lg px-5 py-2">Hapus</button>

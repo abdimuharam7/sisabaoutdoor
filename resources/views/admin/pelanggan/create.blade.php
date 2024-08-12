@@ -1,5 +1,13 @@
 <x-app-layout>
-    <div>
+    <x-slot name="header">
+        <!-- Header content goes here -->
+        <h2 class="font-semibold text-xl text-black-800 leading-tight">
+            Tambah Pelanggan
+        </h2>
+    </x-slot>
+    <div class="relative">
+
+        <div class="min-w-full p-4 bg-white border border-gray-200 rounded-lg shadow">
         <form method="POST" action="{{ route('admin.pelanggan.store') }}">
             @csrf
             @method('POST')
@@ -66,6 +74,13 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
+                <div class="mt-4">
+                    <x-input-label for="field-ktp" :value="__('KTP')" />
+                    <input type="file" name="ktp" id="field-ktp" accept=""
+            class="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded-lg" />
+                    <x-input-error :messages="$errors->get('ktp')" class="mt-2" />
+                </div>
+
                 <!-- Password -->
                 <div class="mt-4">
                     <x-input-label for="password" :value="__('Password')" />
@@ -90,5 +105,6 @@
                 </div>
             </div>
         </form>
+        </div>
     </div>
 </x-app-layout>

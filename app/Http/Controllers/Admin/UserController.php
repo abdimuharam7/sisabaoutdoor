@@ -37,6 +37,7 @@ class UserController extends Controller
             'alamat_ktp'=>['required','string', 'max:255'],
             'alamat_domisili'=>['required','string', 'max:255'],
             'tgl_lahir'=>['required','date'],
+            'ktp'=>['required',],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string','min:8','confirmed', Rules\Password::defaults()],
         ]);
@@ -49,6 +50,12 @@ class UserController extends Controller
         $user->alamat_domisili = $request->alamat_domisili;
         $user->tgl_lahir = $request->tgl_lahir;
         $user->email = $request->email;
+        if ($request->hasFile('ktp')) {
+            $file = $request->file('ktp');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/ktp'), $fileName);
+            $user->ktp = $fileName;
+        }
         $user->password = Hash::make($request->password);
         $user->save();
 
@@ -78,6 +85,12 @@ class UserController extends Controller
         $user->alamat_domisili = $request->alamat_domisili;
         $user->tgl_lahir = $request->tgl_lahir;
         $user->email = $request->email;
+        if ($request->hasFile('ktp')) {
+            $file = $request->file('ktp');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/ktp'), $fileName);
+            $user->ktp = $fileName;
+        }
         if($request->password && $request->password !== null){
             $user->password = Hash::make($request->password);
         }

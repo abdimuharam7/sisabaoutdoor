@@ -164,9 +164,9 @@ class PengadaanController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-   public function destroy(Pengadaan $data)
-        {
-        $data->delete();
+   public function destroy($id)
+    {
+        $data = Pengadaan::where('id', $id)->delete();
 
         return redirect()->route('admin.pengadaan.index')->with('succes', 'data berhasil dihapus');
     }
