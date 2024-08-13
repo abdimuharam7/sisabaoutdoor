@@ -13,7 +13,9 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
+use Mail;
+use PDF;
+use App\Mail\InvoiceMail;
 class PemesananController extends Controller
 {
     
@@ -85,9 +87,11 @@ class PemesananController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function show(Pemesanan $pemesanan)
+    public function show($id)
     {
-        //
+        $data = Pemesanan::where('id', $id)->first();
+
+       return view('pesanan_detail', compact('data'));
     }
 
     /**
@@ -218,6 +222,9 @@ class PemesananController extends Controller
             $pemesanan->status_pembayaran = 'Menunggu';
         }elseif($status == 'SUCCESS'){
             $pemesanan->status_pembayaran = 'Dibayar';
+
+            $this->sendMail($pemesanan->id);
+
             foreach($pemesanan->item as $item)
             {
                 $katalog = $item->katalog;
@@ -229,5 +236,23 @@ class PemesananController extends Controller
         }
         $pemesanan->save();
         return redirect()->route('user.pesanan');
+    }
+
+    private function sendMail($id)
+    {
+        
+        $data = Pemesanan::where('id', $id)
+        ->first();
+        $pdf = PDF::loadView('pdf.invoice', [
+            'data' => $data,
+        ], [ ], [
+            'format' => 'A4-P'
+        ]);
+  
+        Mail::send('emails.invoice', $data->toArray(), function($message)use($data, $pdf) {
+            $message->to($data->user->email, $data->user->nama)
+                    ->subject("Invoice ". $data->kode_transaksi)
+                    ->attachData($pdf->output(), "Invoice ". $data->kode_transaksi ." .pdf");
+        });
     }
 }

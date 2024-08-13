@@ -1,42 +1,68 @@
 <x-layouts.app>
-    <div class="container mx-auto p-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            @foreach ($pemesanan as $item)
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div class="p-6">
-                    <h2 class="text-lg font-semibold mb-2">Kode Transaksi: {{ $item->kode_transaksi }}</h2>
-                    {{-- <p class="text-gray-600">KET: {{ $item }}</p>  --}}
-                    <div class="flex gap-1">
-                        <p class="w-48 flex-none fs-sm">Tanggal Sewa</p>
-                        <p>:</p>
-                        <p>{{ \Carbon\Carbon::parse($item->tgl_penyewaan)->translatedFormat('d F Y') }}</p>
-                    </div>
-                    <div class="flex gap-1">
-                        <p class="w-48 flex-none fs-sm">Durasi</p>
-                        <p>:</p>
-                        <p>{{ $item->durasi }} Hari</p>
-                    </div>
-                    <div class="flex gap-1">
-                        <p class="w-48 flex-none fs-sm">Waktu Pengambilan</p>
-                        <p>:</p>
-                        <p>{{ \Carbon\Carbon::parse($item->jam_pengambilan)->translatedFormat('H:i') }}</p>
-                    </div>
-                    <div class="flex gap-1">
-                        <p class="w-48 flex-none fs-sm">Status Penyewaan</p>
-                        <p>:</p>
-                        <p>{{ $item->status_penyewaan }}</p>
-                    </div>
-                    <div class="flex gap-1">
-                        <p class="w-48 flex-none fs-sm">Status Pembayaran</p>
-                        <p>:</p>
-                        <p>{{ $item->status_pembayaran }}</p>
-                    </div>
-                </div>
-                <div class="bg-gray-100 p-4">
-                    <a href="{{ route('user.checkout', $item->kode_transaksi) }}" class="bg-orange-600 text-white py-2 px-4 text-center no-underline inline-block rounded-full w-full text-lg font-semibold">BAYAR</a>
-                </div>
+    
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Transaksi') }}
+        </h2>
+    </x-slot>
+    <div class="relative pt-7">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="bg-white shadow sm:rounded-lg">
+                
+            <table class="dataTable" width="100%">
+                <thead class="bg-green-500 text-white">
+                    <tr>
+                        <td width="50px">No</td>
+                        <td>Kode</td>
+                        <td>Pelanggan</td>
+                        <td>Tgl Sewa</td>
+                        <td>Durasi</td>
+                        <td>Status</td>
+                        <td>Pembayaran</td>
+                        <td>Total</td>
+                        <td>Aksi</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pemesanan as $item)
+                    <tr>
+                        <td class>{{ $loop->index+1 }}</td>
+                        <td>{{ $item->kode_transaksi }}</td>
+                        <td>{{ $item->user->nama }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_penyewaan)->translatedFormat('d F Y') }}</td>
+                        <td>{{ $item->durasi }} Hari</td>
+                        <td>{{ $item->status_penyewaan }}</td>
+                        <td>{{ $item->status_pembayaran }}</td>
+                        <td>
+                            @php
+                            $total = 0;
+                            @endphp
+                            @foreach ($item->item as $items)
+                            @php
+                            $total += $items->katalog->harga * $items->jumlah;
+                            @endphp
+                            @endforeach
+                            <p> Rp. {{ number_format($total, 0, ',', '.') }}</p>
+                        </td>
+                        <td class="py-1 px-2">
+
+                            <a href="{{ route('user.pesanan.show', $item->id) }}"
+                                class="bg-green-500 text-white rounded-lg px-5 py-2">
+                                Detail
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             </div>
-            @endforeach
         </div>
     </div>
+    @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable();
+        })
+    </script>
+    @endpush
 </x-layouts.app>

@@ -14,7 +14,10 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.0/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.0/css/buttons.dataTables.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.2/css/dataTables.tailwindcss.css">
 
     <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -58,7 +61,12 @@
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>        
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.0/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.2/js/dataTables.tailwindcss.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+  
 @stack('scripts')
 </html>

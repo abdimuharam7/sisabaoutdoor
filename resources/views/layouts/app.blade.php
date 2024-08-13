@@ -84,7 +84,8 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>        <script src="https://cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.1.0/js/dataTables.buttons.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.dataTables.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.1.0/js/buttons.print.min.js"></script>

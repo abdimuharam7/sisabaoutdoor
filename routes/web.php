@@ -120,7 +120,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
 });
 
 //route pelanggan
-Route::middleware(['auth','role:pelanggan'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/dashboard',function(){
         return view('pelanggan.dashboard');
     })->name('pelanggan.dashboard');
@@ -129,9 +129,11 @@ Route::middleware(['auth','role:pelanggan'])->group(function () {
     Route::post('pelanggan/pemesanan',[PemesananController::class,'store'])->name('pemesanan.store');
     Route::resource('pelanggan/keranjang', CartController::class);
     Route::get('pelanggan/pesanan',[PemesananController::class,'userPesanan'])->name('user.pesanan');
+    Route::get('pelanggan/pesanan/{id}',[PemesananController::class,'show'])->name('user.pesanan.show');
     Route::get('pelanggan/checkout/{kode}',[PemesananController::class,'userCheckout'])->name('user.checkout');
     Route::post('pelanggan/payment/{pemesanan}',[PemesananController::class,'payment'])->name('user.payment');
 
+    Route::get('pelanggan/pesanan/{id}/email',[PemesananController::class,'sendMail'])->name('user.pesanan.email');
 
    // Route::get('/pelanggan/aturan', [AturanController::class, 'index'])->name('pelanggan.aturan');
    // Route::get('/pelanggan/katalog', [KatalogController::class,'index'])->name('pelanggan.katalog');
