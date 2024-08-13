@@ -23,7 +23,6 @@
                                 </div>
                                 <div class="flex total">
                                     <div class="my-auto ms-auto">
-                                        <p class="text-end">Rp. {{ number_format($item->katalog->harga,0,',','.') }}</p>
                                         <p class="text-end showTotal">Rp. {{ number_format($item->katalog->harga * $item->jumlah,0,',','.') }}</p>
                                     </div>
                                 </div>

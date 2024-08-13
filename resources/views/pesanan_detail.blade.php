@@ -16,7 +16,10 @@
                     </a>
                 </div>
     
-                @elseif($data->status_pembayaran == 'gagal')
+                @elseif($data->status_pembayaran == 'Dibayar')
+                <div class="p-4 text-center">
+                    <p class="text-xl mb-3">Peralatan yang disewa dapat segera di ambil di basecamp sesuai dengan tangal dan waktu pengambilan</p>
+                </div>
                 @endif
                 <div class="p-4 grid grid-cols-2 gap-3">
                     <div class="flex gap-1">
