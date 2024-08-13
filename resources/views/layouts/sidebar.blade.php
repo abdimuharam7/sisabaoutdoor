@@ -8,6 +8,9 @@
 <aside id="default-sidebar" class=" w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
+        @if (auth()->guard('admin')->role == 'admin')
+            
+        @endif
          <li>
             <a href="{{ route('admin.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
@@ -49,6 +52,35 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Pembelian</span>
             </a>
         </li>
+        <li>
+            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" onclick="dropdown()">
+                <i class="fa fa-print w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                <span class="flex-1 ms-3 whitespace-nowrap">Laporan</span>
+                <span class="text-sm rotate-180" id="arrow">
+                  <i class="fa fa-chevron-down"></i>
+                </span>
+            </a>
+            <ul id="submenu" class="ps-3">
+                <li>
+                   <a href="{{ route('admin.laporan.pemesanan') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <i class="fas fa-shopping-cart w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pemesanan</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{ route('admin.laporan.pengembalian')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <i class="fas fa-undo-alt w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pengembalian</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{ route('admin.laporan.pembelian')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <i class="fas fa-shop w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pembelian</span>
+                   </a>
+               </li>
+            </ul>
+        </li>
          <li>
             <form action="{{route('admin.logout')}}" class="w-full" method="POST">
                 @csrf
@@ -61,3 +93,15 @@
       </ul>
    </div>
 </aside>
+
+<script type="text/javascript">
+    function dropdown() {
+      document.querySelector("#submenu").classList.toggle("hidden");
+      document.querySelector("#arrow").classList.toggle("rotate-0");
+    }
+    dropdown();
+
+    function openSidebar() {
+      document.querySelector(".sidebar").classList.toggle("hidden");
+    }
+  </script>

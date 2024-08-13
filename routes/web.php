@@ -63,8 +63,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
             // Route::resource('/pelanggan', UserController::class);
             Route::resource('/pelanggan','UserController');
             Route::resource('/katalog', 'KatalogController');
-
-            Route::get('/katalog/{id}/json', [KatalogController::class, 'json'])->name('katalog.json');
+            Route::get('/katalog/{id}/json', 'KatalogController@json')->name('katalog.json');
 
             Route::name('pemesanan.')->prefix('/pemesanan')->group(function () {
                 Route::get('/', 'PemesananController@index')->name('index');
@@ -105,6 +104,13 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
             });
 
             
+
+            Route::name('laporan.')->prefix('/laporan')->group(function () {
+                Route::get('/pemesanan', 'LaporanController@pemesanan')->name('pemesanan');
+                Route::get('/pembelian', 'LaporanController@pembelian')->name('pembelian');
+                Route::get('/pengembalian', 'LaporanController@pengembalian')->name('pengembalian');
+            });
+
             Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
             Route::patch('/profile', 'ProfileController@update')->name('profile.update');
             Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
