@@ -61,10 +61,32 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
             Route::get('/dashboard','DashboardController@index')->name('dashboard');
 
             // Route::resource('/pelanggan', UserController::class);
-            Route::resource('/pelanggan','UserController');
-            Route::resource('/katalog', 'KatalogController');
-            Route::get('/katalog/{id}/json', 'KatalogController@json')->name('katalog.json');
+            // Route::resource('/pelanggan','UserController');
+            // Route::resource('/katalog', 'KatalogController');
 
+            Route::name('katalog.')->prefix('/katalog')->group(function () {
+                Route::get('/', 'KatalogController@index')->name('index');
+                Route::get('/create', 'KatalogController@create')->name('create');
+                Route::post('/store', 'KatalogController@store')->name('store');
+                Route::get('/report', 'KatalogController@report')->name('report');
+                Route::get('/{id}', 'KatalogController@show')->name('show');
+                Route::get('/{id}/json', 'KatalogController@json')->name('json');
+                Route::get('/{id}/edit', 'KatalogController@edit')->name('edit');
+                Route::post('/{id}/update', 'KatalogController@update')->name('update');
+                Route::post('/{id}/status', 'KatalogController@status')->name('status');
+                Route::delete('/{id}/destroy', 'KatalogController@destroy')->name('destroy');
+            });
+            Route::name('pelanggan.')->prefix('/pelanggan')->group(function () {
+                Route::get('/', 'UserController@index')->name('index');
+                Route::get('/create', 'UserController@create')->name('create');
+                Route::post('/store', 'UserController@store')->name('store');
+                Route::get('/report', 'UserController@report')->name('report');
+                Route::get('/{id}', 'UserController@show')->name('show');
+                Route::get('/{id}/edit', 'UserController@edit')->name('edit');
+                Route::post('/{id}/update', 'UserController@update')->name('update');
+                Route::post('/{id}/status', 'UserController@status')->name('status');
+                Route::delete('/{id}/destroy', 'UserController@destroy')->name('destroy');
+            });
             Route::name('pemesanan.')->prefix('/pemesanan')->group(function () {
                 Route::get('/', 'PemesananController@index')->name('index');
                 Route::get('/create', 'PemesananController@create')->name('create');

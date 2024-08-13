@@ -87,8 +87,10 @@ class KatalogController extends Controller
      * @param  \App\Models\Katalog  $katalog
      * @return \Illuminate\Http\Response
      */
-    public function edit(Katalog $katalog)
+    public function edit($id)
     {
+        $katalog = Katalog::where('id', $id)->first();
+
         return view('admin.katalog.edit', compact('katalog'));
     }
 
@@ -99,9 +101,10 @@ class KatalogController extends Controller
      * @param  \App\Models\Katalog  $katalog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Katalog $katalog)
+    public function update($id, Request $request)
     {
-        //
+        //]
+        // dd($request->all());
         $request->validate([
             'nama' => ['required', 'string', 'max:255'],
             'harga' => ['required', 'numeric'],
@@ -109,7 +112,7 @@ class KatalogController extends Controller
             'foto' => ['nullable', 'image', 'max:2048'],
 
         ]);
-
+        $katalog = Katalog::where('id', $id)->first();
         $katalog->nama = $request->nama;
         $katalog->harga = $request->harga;
         $katalog->stok = $request->stok;

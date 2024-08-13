@@ -10,7 +10,6 @@
             class="min-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <form method="POST" action="{{ route('admin.pelanggan.update',$pelanggan->id) }}">
                 @csrf
-                @method('PUT')
                 <div class="grid grid-cols-2 gap-3">
 
                     <!-- Nama -->
