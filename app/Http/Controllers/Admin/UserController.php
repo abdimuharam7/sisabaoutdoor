@@ -66,6 +66,11 @@ class UserController extends Controller
         $pelanggan = User::find($id);
         return view('admin.pelanggan.edit',compact('pelanggan'));
     }
+    public function show($id)
+    {
+        $data = User::find($id);
+        return view('admin.pelanggan.show',compact('data'));
+    }
     public function update(Request $request, $id){
         $request->validate([
             'nama' => ['required', 'string', 'max:255'],

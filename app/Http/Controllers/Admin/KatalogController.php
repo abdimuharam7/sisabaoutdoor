@@ -54,6 +54,8 @@ class KatalogController extends Controller
         $katalog->nama = $request->nama;
         $katalog->harga = $request->harga;
         $katalog->stok = $request->stok;
+        $katalog->harga_beli = $request->harga_beli;
+        $katalog->satuan = $request->satuan;
         $katalog->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('foto')) {
@@ -108,11 +110,12 @@ class KatalogController extends Controller
 
         ]);
 
-
-
         $katalog->nama = $request->nama;
         $katalog->harga = $request->harga;
         $katalog->stok = $request->stok;
+        $katalog->harga_beli = $request->harga_beli;
+        $katalog->satuan = $request->satuan;
+        $katalog->deskripsi = $request->deskripsi;
         if ($request->hasFile('foto')) {
             $pathRemove = public_path('uploads/' .$katalog->foto);
             unlink($pathRemove);

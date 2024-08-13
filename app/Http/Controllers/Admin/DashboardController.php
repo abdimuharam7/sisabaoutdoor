@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
 
         $data = Collect([
-            'pelanggan' => User::latest()->get()->count(),
+            'pelanggan' => User::where('role', 'pelanggan')->latest()->get()->count(),
             'pemesanan' => Pemesanan::latest()->get()->count(),
         ]);
 

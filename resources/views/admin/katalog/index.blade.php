@@ -6,10 +6,10 @@
         </h2>
     </x-slot>
     <div class="relative">
-        <div class="min-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="min-w-full p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
-            <div class="p-4 d-flex">
-            <a href="{{ route('admin.katalog.create') }}" class="bg-green-500 text-white rounded-lg px-5 py-2"> Tambah Katalog</a>
+            <div class="mb-4 flex">
+                <a href="{{ route('admin.katalog.create') }}" class="bg-green-500 text-white rounded-lg px-5 py-2"> Tambah Katalog</a>
             </div>
             <div class>
             <table class="w-full dataTable">
@@ -18,6 +18,7 @@
                         <td class="py-1 px-2 text-center">No</td>
                         <td class="py-1 px-2 text-center">Nama</td>
                         <td class="py-1 px-2 text-center">Harga</td>
+                        <td class="py-1 px-2 text-center">Satuan</td>
                         <td class="py-1 px-2 text-center">Stok</td>
                         <td class="py-1 px-2 text-center">Foto</td>
                         <td class="py-1 px-2 text-center">Aksi</td>
@@ -29,6 +30,7 @@
                             <td class="py-1 px-2 text-center">{{ $loop->index + 1 }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->nama }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->harga }}</td>
+                            <td class="py-1 px-2 text-center">{{ $item->satuan }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->stok }}</td>
                             <td class="py-1 px-2 text-center">
                                 <div class ="flex justify-center">
