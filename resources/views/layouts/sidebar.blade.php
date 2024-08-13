@@ -8,7 +8,7 @@
 <aside id="default-sidebar" class=" w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
-        @if (auth()->guard('admin')->role == 'admin')
+        @if (auth()->guard('admin')->user()->role == 'admin')
         <li>
            <a href="{{ route('admin.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
@@ -49,7 +49,7 @@
        </li>
         @endif
 
-        @if (auth()->guard('admin')->role == 'logistik')
+        @if (auth()->guard('admin')->user()->role == 'logistik')
         <li>
             <a href="{{ route('admin.pengembalian.index')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <i class="fas fa-undo-alt w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -74,7 +74,7 @@
         @endif
 
         
-        @if (auth()->guard('admin')->role == 'pemilik')
+        @if (auth()->guard('admin')->user()->role == 'pemilik')
         <li>
             <a href="{{ route('admin.pengadaan.index')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <i class="fas fa-shop w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
