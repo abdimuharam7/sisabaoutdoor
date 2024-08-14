@@ -22,7 +22,7 @@
                             <x-input-error :messages="$errors->get('tgl')" class="mt-2" />
                         </div>
                         <div class="mb-2">
-                            <x-input-label for="field-waktu" value="Waktu Pengembalian" />
+                            <x-input-label for="field-waktu" value="Jam Pengembalian" />
                             <x-text-input id="field-waktu" class="block mt-1 w-full" type="text" name="waktu" :value="old('waktu')"/>
                             <x-input-error :messages="$errors->get('waktu')" class="mt-2" />
                         </div>

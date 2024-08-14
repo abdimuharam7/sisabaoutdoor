@@ -26,7 +26,7 @@
         <!-- Logo -->
         <div class="w-full sm:max-w-4xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="flex justify-center w-full bg-slate- mb-8">
-                <img src="gambar/logo.jpeg" alt="Logo" class="h-auto" style="width: 90px;">
+                <img src="/gambar/logo.jpeg" alt="Logo" class="h-auto" style="width: 90px;">
             </div>
             {{ $slot }}
         </div>

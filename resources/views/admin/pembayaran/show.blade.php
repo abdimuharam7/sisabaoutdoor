@@ -18,7 +18,7 @@
                     </a>
                 </div>
                 <div class="flex justify-end">
-                    @if ($data->status_pembayaran == 'belum')
+                    @if ($data->status_pembayaran == 'Menunggu')
                     <button data-modal-target="alertSukses" data-modal-toggle="alertSukses" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                         Konfirmasi Pembayaran
                     </button>
@@ -65,6 +65,11 @@
                     <p class="w-48 flex-none">Status</p>
                     <p>:</p>
                     <p>{{ $data->status_penyewaan }}</p>
+                </div>
+                <div class="flex gap-1">
+                    <p class="w-48 flex-none">Status Pembayaran</p>
+                    <p>:</p>
+                    <p>{{ $data->status_pembayaran }}</p>
                 </div>
             </div>
             
@@ -118,7 +123,7 @@
             </table>
         </div>
     </div>
-    <x-alert-modal id="alertSukses" route="{{ route('admin.pemesanan.bayar', $data->id) }}" value="Dibayar"/>
+    <x-alert-modal id="alertSukses" msg="Konfirmasi Pembayaran?" route="{{ route('admin.pemesanan.bayar', $data->id) }}" value="Dibayar"/>
 </x-app-layout>
 <script>
     $(document).ready(function() {

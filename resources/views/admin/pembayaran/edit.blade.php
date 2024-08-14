@@ -23,7 +23,7 @@
                             <x-input-error :messages="$errors->get('tgl')" class="mt-2" />
                         </div>
                         <div class="mb-2">
-                            <x-input-label for="field-waktu" value="Waktu Pengembalian" />
+                            <x-input-label for="field-waktu" value="Jam Pengembalian" />
                             <x-text-input id="field-waktu" class="block mt-1 w-full" type="text" name="waktu"
                                 :value="old('waktu', $data->jam_pengambilan)" />
                             <x-input-error :messages="$errors->get('waktu')" class="mt-2" />
@@ -45,14 +45,23 @@
                             <x-input-error :messages="$errors->get('jaminan')" class="mt-2" />
                         </div>
                         <div class="mb-2">
-                            <x-input-label for="field-status" value="status" />
+                            <x-input-label for="field-status" value="Status" />
                             <x-select-field id="status" name="status" placeholder="Pilih"
                                 value="{{ $data->status_penyewaan }}" :options="[
                                 ['label' => 'Menunggu', 'value' => 'Menunggu'],
                                 ['label' => 'Diterima', 'value' => 'Diterima'],
                                 ['label' => 'Ditolak', 'value' => 'Ditolak'],
                             ]" />
-                            <x-input-error :messages="$errors->get('jaminan')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('status_penyewaan')" class="mt-2" />
+                        </div>
+                        <div class="mb-2">
+                            <x-input-label for="field-status" value="Status Pembayaran" />
+                            <x-select-field id="status_pembayaran" name="status_pembayaran" placeholder="Pilih"
+                                value="{{ $data->status_penyewaan }}" :options="[
+                                ['label' => 'Dibayar', 'value' => 'Dibayar'],
+                                ['label' => 'Belum Bayar', 'value' => 'Menunggu'],
+                            ]" />
+                            <x-input-error :messages="$errors->get('status_pembayaran')" class="mt-2" />
                         </div>
                     </div>
 

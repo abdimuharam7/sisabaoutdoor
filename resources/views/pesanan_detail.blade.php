@@ -18,7 +18,7 @@
     
                 @elseif($data->status_pembayaran == 'Dibayar')
                 <div class="p-4 text-center">
-                    <p class="text-xl mb-3">Peralatan yang disewa dapat segera di ambil di basecamp sesuai dengan tangal dan waktu pengambilan</p>
+                    <p class="text-xl mb-3">Pengambilan alat sewa bisa diambil di basecamp saba outdoor sesuai dengan tanggal penyewaan dan jam pengambilan yang telah dipilih sebelumnya</p>
                 </div>
                 @endif
                 <div class="p-4 grid grid-cols-2 gap-3">

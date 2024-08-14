@@ -16,6 +16,7 @@
                                 </div>
                                 <div class="flex gap-3 items-center justify-center">
                                     <button type="button" class="btn-dcm">-</button>
+                                    <input value="{{ $item->id }}" type="hidden" class="cart_id" />
                                     <input value="{{ $item->katalog->harga }}" type="hidden" class="harga" />
                                     <input value="{{ $item->jumlah }}" type="number" class="w-12 rounded-lg h-min qty" name="item[{{ $item->id }}][jumlah]" id="">
                                     <input value="{{ $item->katalog->id }}" type="hidden" name="item[{{ $item->id }}][id]" id="">
@@ -45,7 +46,6 @@
 
     @push('scripts')
     <script>
-
             
         function calculateTotal() {
             // var total = 0;
@@ -54,8 +54,23 @@
                 var total =0;
                 var qty = parseInt($(this).find('input.qty').val());
                 var harga = parseInt($(this).find('.harga').val());
+                var id = $(this).find('.cart_id').val();
                 if (!isNaN(qty) && !isNaN(harga)) {
                     total += qty * harga;
+                }
+                var line = $(this);
+                if(qty == 0){
+                    $.ajax({
+                        url: "/pelanggan/keranjang/"+ id +"/delete",
+                        type: "DELETE",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function(data) {
+                            // alert(data.fail);
+                            if(data.fail == false){
+                                line.remove();
+                            }
+                        },
+                    });
                 }
                 // console.log(total);
                 $(this).find('p.showTotal').text(currency(total));
@@ -115,6 +130,7 @@
                 }
                 calculateTotal();
             });
+            
         });
     </script>
     @endpush

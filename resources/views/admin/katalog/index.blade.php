@@ -17,7 +17,8 @@
                     <tr>
                         <td class="py-1 px-2 text-center">No</td>
                         <td class="py-1 px-2 text-center">Nama</td>
-                        <td class="py-1 px-2 text-center">Harga</td>
+                        <td class="py-1 px-2 text-center">Harga Sewa</td>
+                        <td class="py-1 px-2 text-center">Harga Beli</td>
                         <td class="py-1 px-2 text-center">Satuan</td>
                         <td class="py-1 px-2 text-center">Stok</td>
                         <td class="py-1 px-2 text-center">Foto</td>
@@ -30,6 +31,7 @@
                             <td class="py-1 px-2 text-center">{{ $loop->index + 1 }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->nama }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->harga }}</td>
+                            <td class="py-1 px-2 text-center">{{ $item->harga_beli }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->satuan }}</td>
                             <td class="py-1 px-2 text-center">{{ $item->stok }}</td>
                             <td class="py-1 px-2 text-center">

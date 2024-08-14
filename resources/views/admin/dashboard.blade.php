@@ -7,6 +7,7 @@
 
     <div class="relative">
         <div class="grid grid-cols-2 gap-3">
+            @if(auth()->guard('admin')->user()->role == 'admin')
             <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
                 <div class="p-4 bg-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -31,6 +32,37 @@
                     <p class="text-3xl">{{ $data['pemesanan'] }}</p>
                 </div>
             </div>
+            @elseif(auth()->guard('admin')->user()->role == 'logistik')
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-green-400">
+                    <i class="fas fa-shop fa-3x text-white"></i>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Total Pembelian</h3>
+                    <p class="text-3xl">{{ $data['pembelian'] }}</p>
+                </div>
+            </div>
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-blue-400">
+                    <i class="fas fa-undo-alt fa-3x text-white"></i>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Total Pengembalian</h3>
+                    <p class="text-3xl">{{ $data['pengembalian'] }}</p>
+                </div>
+            </div>
+            @else
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-green-400">
+                    <i class="fas fa-shop fa-3x text-white"></i>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Total Pembelian</h3>
+                    <p class="text-3xl">{{ $data['pembelian'] }}</p>
+                </div>
+            </div>
+
+            @endif
         </div>
     </div>
 </x-app-layout>

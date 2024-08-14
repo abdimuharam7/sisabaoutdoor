@@ -150,6 +150,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('pelanggan/katalog', [PelangganController::class, 'katalog'])->name('katalog');
     Route::post('pelanggan/pemesanan',[PemesananController::class,'store'])->name('pemesanan.store');
     Route::resource('pelanggan/keranjang', CartController::class);
+    Route::delete('pelanggan/keranjang/{id}/delete',[CartController::class,'destroy'])->name('cart.delete');
+
     Route::get('pelanggan/pesanan',[PemesananController::class,'userPesanan'])->name('user.pesanan');
     Route::get('pelanggan/pesanan/{id}',[PemesananController::class,'show'])->name('user.pesanan.show');
     Route::get('pelanggan/checkout/{kode}',[PemesananController::class,'userCheckout'])->name('user.checkout');

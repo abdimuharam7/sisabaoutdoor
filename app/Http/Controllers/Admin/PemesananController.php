@@ -118,6 +118,7 @@ class PemesananController extends Controller
         $pemesanan->jaminan = $request->jaminan;
         $pemesanan->user_id = $request->pelanggan_id;
         $pemesanan->status_penyewaan = $request->status;
+        $pemesanan->status_pembayaran = $request->status_pembayaran;
         $pemesanan->save();
 
         foreach ($request->lines as $item) {

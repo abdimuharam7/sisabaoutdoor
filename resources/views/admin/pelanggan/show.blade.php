@@ -54,7 +54,7 @@
                     <p class="w-48 flex-none">File KTP</p>
                     <p>:</p>
                     <p>
-                        <a href="{{ $data->ktp }}" class="bg-green-500 text-white rounded-lg px-5 py-2">
+                        <a href="/uploads/ktp/{{ $data->ktp }}" class="bg-green-500 text-white rounded-lg px-5 py-2">
                         Lihat File
                         </a>
                     </p>

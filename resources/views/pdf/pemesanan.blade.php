@@ -26,7 +26,7 @@
         <div style="width:100%; padding:1px;background:black; margin-top:4px;"></div>
         <br/>
         <br/>
-        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN PESANAN</h2>
+        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN PENYEWAAN</h2>
         <h2 class="h4 text-center" style="font-weight: bold; margin-top:0px">
             Periode : {{ \Carbon\Carbon::parse($tgl[0])->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($tgl[1])->translatedFormat('d F Y') }}
         </h2>
@@ -45,6 +45,10 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total_all = 0;
+                    $unpaid = 0;
+                @endphp
                 @foreach ($data as $item)
                 <tr>
                     <td class>{{ $loop->index+1 }}</td>
@@ -61,6 +65,12 @@
                         @foreach ($item->item as $items)
                         @php
                         $total += $items->katalog->harga * $items->jumlah;
+                        if($item->status_pembayaran == 'Dibayar'){
+                            $total_all += $total;
+                        }else {
+                            $unpaid += $total;
+                        }
+
                         @endphp
                         @endforeach
                         <p> Rp. {{ number_format($total, 0, ',', '.') }}</p>
@@ -68,6 +78,24 @@
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        Total Pembayaran
+                    </td>
+                    <td>
+                        Rp. {{ number_format($total_all, 0, ',', '.') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        Total Belum Bayar
+                    </td>
+                    <td>
+                        Rp. {{ number_format($unpaid, 0, ',', '.') }}
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
