@@ -59,7 +59,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('admin.pelanggan.index')->with('success','Berhasil');
+        return redirect()->back()->with('success','Berhasil');
     }
     public function edit($id)
     {

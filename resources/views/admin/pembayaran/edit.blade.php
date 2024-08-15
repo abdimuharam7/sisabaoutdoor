@@ -57,7 +57,7 @@
                         <div class="mb-2">
                             <x-input-label for="field-status" value="Status Pembayaran" />
                             <x-select-field id="status_pembayaran" name="status_pembayaran" placeholder="Pilih"
-                                value="{{ $data->status_penyewaan }}" :options="[
+                                value="{{ $data->status_pembayaran }}" :options="[
                                 ['label' => 'Dibayar', 'value' => 'Dibayar'],
                                 ['label' => 'Belum Bayar', 'value' => 'Menunggu'],
                             ]" />

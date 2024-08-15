@@ -2,7 +2,7 @@
 
 <head>
     <title>
-        @if(request()->get('type') == 'invoice')
+        @if($type == 'invoice')
             INVOICE
         @else
             BUKTI TERIMA BARANG
@@ -52,7 +52,7 @@
         </table>
         <hr/>
         <h1 style="text-align:center;margin-bottom: 5px;font-size:16pt;font-weight: bold;">
-            @if(request()->get('type') == 'invoice')
+            @if($type == 'invoice')
                 INVOICE
             @else
                 BUKTI TERIMA BARANG

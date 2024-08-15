@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title> Laporan Pengembalian</title>
+    <title> Laporan Keterlambatan</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 
@@ -26,7 +26,7 @@
         <div style="width:100%; padding:1px;background:black; margin-top:4px;"></div>
         <br/>
         <br/>
-        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN PENGEMBALIAN</h2>
+        <h2 class="h3 text-center" style="font-weight: bold; margin-top:0px">LAPORAN KETERLAMBATAN</h2>
         <h2 class="h4 text-center" style="font-weight: bold; margin-top:0px">
             Periode : {{ \Carbon\Carbon::parse($tgl[0])->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($tgl[1])->translatedFormat('d F Y') }}
         </h2>
@@ -35,39 +35,46 @@
             <thead>
                 <tr>
                     <th width="50px">No</th>
-                    <th>Kode</th>
-                    <th>Kode Sewa</th>
-                    <th>Tanggal</th>
+                    <th>Kode Pesanan</th>
+                    <th>Pelanggan</th>
+                    <th>No Hp/Wa</th>
+                    <th>Alamat</th>
+                    <th>Tgl Kembali</th>
                     <th>Telat</th>
-                    <th>Alat Rusak/Hilang</th>
-                    <th>Total Denda</th>
+                    <th>Alat</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $item)
+                @php
+                    $total_all = 0;
+                    $no = 1;
+                @endphp
+                @foreach ($data as $d)
+                @php
+                    $created =  \Carbon\Carbon::parse($d->tgl_penyewaan)->setTimeFromTimeString($d->jam_pengambilan)->addDay($d->durasi);
+                    $now = \Carbon\Carbon::now();
+                    $diff = $created->diff($now)->days;
+                @endphp
+                @if($diff)
                 <tr>
-                    <td class>{{ $loop->index+1 }}</td>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->pemesanan->kode_transaksi }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tgl_penyewaan)->translatedFormat('d F Y') }}</td>
-                    <td>{{ $item->telat }} Hari</td>
+                    <td class>{{ $no++ }}</td>
+                    <td>{{ $d->kode_transaksi }}</td>
+                    <td>{{ $d->user->nama }}</td>
+                    <td>{{ $d->user->nomor_wa }}</td>
+                    <td>{{ ucwords($d->user->alamat_domisili) }}</td>
                     <td>
-                        @foreach ($item->denda as $d)
-                            @php
-                                $rusak = $d->rusak_ringan + $d->rusak_sedang + $d->rusak_total + $d->hilang;
-                            @endphp
-                            @if ($rusak)
-                                {{ $rusak }} {{ $d->katalog->nama }} ,
-                            @else
-                            -
-                            @endif
-
+                        {{ $created->translatedFormat('d F Y H:i') }}
+                    </td>
+                    <td>
+                        {{ $diff }} Hari
+                    </td>
+                    <td>
+                        @foreach ($d->item as $i)
+                            {{$i->jumlah}} {{ $i->katalog->nama }},
                         @endforeach
                     </td>
-                    <td>
-                        <p> Rp. {{ number_format($item->total, 0, ',', '.') }}</p>
-                    </td>
                 </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>

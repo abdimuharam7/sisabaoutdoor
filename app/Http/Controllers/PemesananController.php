@@ -9,6 +9,7 @@ use App\Models\User;
 use Duitku\Api;
 use Duitku\Config;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,33 +53,42 @@ class PemesananController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $rules = [
+            'tgl_penyewaan' => 'required',
+            'durasi' => 'required',
+            'jam_pengambilan' => 'required',
+            'jaminan' => 'required',
+        ];
 
-        $date = strtotime(date("Y-m-d H:i:s"));
-        $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
-        $pemesanan = new Pemesanan();
-        $pemesanan->kode_transaksi = $kode;
-        $pemesanan->tgl_penyewaan = $request->tgl_penyewaan;
-        $pemesanan->durasi = $request->durasi;
-        $pemesanan->jam_pengambilan = $request->jam_pengambilan;
-        $pemesanan->jaminan = $request->jaminan;
-        $pemesanan->user_id = Auth::user()->id;
-        $pemesanan->save();
-
-
-        foreach ($request->item as $item) {
-            $itemPesanan = new ItemPemesanan();
-            $itemPesanan->katalog_id = $item['id'];
-            $itemPesanan->pemesanan_id = $pemesanan->id;
-            $itemPesanan->jumlah = $item['jumlah'];
-            $itemPesanan->save();
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()){
+            return back()->withErrors($validator->errors())->withInput();
+        }else{
+            $date = strtotime(date("Y-m-d H:i:s"));
+            $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
+            $pemesanan = new Pemesanan();
+            $pemesanan->kode_transaksi = $kode;
+            $pemesanan->tgl_penyewaan = $request->tgl_penyewaan;
+            $pemesanan->durasi = $request->durasi;
+            $pemesanan->jam_pengambilan = $request->jam_pengambilan;
+            $pemesanan->jaminan = $request->jaminan;
+            $pemesanan->user_id = Auth::user()->id;
+            $pemesanan->save();
+    
+            foreach ($request->item as $item) {
+                $itemPesanan = new ItemPemesanan();
+                $itemPesanan->katalog_id = $item['id'];
+                $itemPesanan->pemesanan_id = $pemesanan->id;
+                $itemPesanan->jumlah = $item['jumlah'];
+                $itemPesanan->save();
+            }
+    
+            foreach (Auth::user()->cart as $cart) {
+                $cart->delete();
+            }
+            
+            return redirect()->route('user.pesanan.show', $pemesanan->id)->with(['success' => 'Berhasil Membuat Pesanan']);
         }
-
-        foreach (Auth::user()->cart as $cart) {
-            $cart->delete();
-        }
-        
-        return redirect()->route('user.pesanan')->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
     /**
@@ -150,6 +160,7 @@ class PemesananController extends Controller
         $response = Api::getPaymentMethod(2000000, $duitkuConfig);
         $jsonResponse = json_decode($response);
         $paymentMethod = collect($jsonResponse->paymentFee);
+
         return view('checkout', compact('pemesanan', 'paymentMethod'));
     }
     public function payment(Request $request, Pemesanan $pemesanan)
@@ -159,7 +170,7 @@ class PemesananController extends Controller
             $pemesanan->status_penyewaan = 'Menunggu';
             $pemesanan->status_pembayaran = 'Menunggu';
             $pemesanan->save();
-            return redirect()->route('user.pesanan');
+            return redirect()->route('user.pesanan.show', $pemesanan->id);
         }else{
             $duitkuConfig = new Config(env('DUITKU_API_KEY'), env('DUITKU_MERCHANT_KODE'));
             
@@ -235,7 +246,7 @@ class PemesananController extends Controller
             $pemesanan->status_pembayaran = 'gagal';
         }
         $pemesanan->save();
-        return redirect()->route('user.pesanan');
+        return redirect()->route('user.pesanan.show', $pemesanan->id);
     }
 
     private function sendMail($id)

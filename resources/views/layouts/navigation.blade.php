@@ -23,9 +23,9 @@
                         {{ __('SEWA') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('transaksi')">
+                    {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('transaksi')">
                         {{ __('TRANSAKSI') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
 
                 </div>
             </div>

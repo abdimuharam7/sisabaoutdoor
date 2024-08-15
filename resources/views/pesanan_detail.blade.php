@@ -10,7 +10,9 @@
             <div class="bg-white shadow sm:rounded-lg">
                 @if($data->status_pembayaran == 'Menunggu')
                 <div class="p-4 text-center">
-                    <h3 class="text-xl mb-3">Selesaikan Pembayaran</h3>
+                    <h3 class="text-xl mb-3">Segera Selesaikan Pembayaran Sebelum</h3>
+                    <p>Jika Pembayaran Tunai Segera Kunjungi Base Camp Sekarang</p>
+                    <h3 id="countdown" class="mb-3"></h3>
                     <a href="{{ route('user.checkout', $data->kode_transaksi) }}" class="bg-green-500 mx-3 me-3 text-white rounded-lg px-5 py-2">
                         Bayar Sekarang
                     </a>
@@ -38,7 +40,7 @@
                         <p>{{ \Carbon\Carbon::parse($data->tgl_penyewaan)->translatedFormat('d F Y') }}</p>
                     </div>
                     <div class="flex gap-1">
-                        <p class="w-48 flex-none">Waktu Pengambilan</p>
+                        <p class="w-48 flex-none">Jam Pengambilan</p>
                         <p>:</p>
                         <p>{{ \Carbon\Carbon::parse($data->jam_pengambilan)->translatedFormat('H:i') }} WIB</p>
                     </div>
@@ -51,6 +53,11 @@
                         <p class="w-48 flex-none">Status</p>
                         <p>:</p>
                         <p>{{ $data->status_penyewaan }}</p>
+                    </div>
+                    <div class="flex gap-1">
+                        <p class="w-48 flex-none">Status Pembayaran</p>
+                        <p>:</p>
+                        <p>{{ $data->status_pembayaran }}</p>
                     </div>
                 </div>
                 
@@ -106,9 +113,20 @@
         </div>
     </div>
     @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js" ></script>
     <script>
         $(document).ready(function() {
             $('.dataTable').DataTable();
+
+            var amnbil = moment.tz("{{ $data->created_at }}", "Asia/Jakarta").add(3, 'h');
+
+            $("#countdown").countdown(amnbil.toDate(), function(event) {
+                $(this).text(
+                event.strftime('%H Jam %M Menit %S Detik')
+                );
+            });
         })
     </script>
     @endpush

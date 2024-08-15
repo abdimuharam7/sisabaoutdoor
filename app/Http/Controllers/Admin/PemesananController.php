@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
+use Carbon\Carbon;
 class PemesananController extends Controller
 {
     /**
@@ -193,6 +194,7 @@ class PemesananController extends Controller
     public function report(Request $request)
     {
         $tgl = explode(" - ",$request->tgl);
+        
         $data = Pemesanan::with(['user'])
         ->whereBetween('tgl_penyewaan', $tgl)
         ->latest()->get();
@@ -206,5 +208,41 @@ class PemesananController extends Controller
         ], [ ], $config);
 
         return $pdf->stream('Laporan Pesanan.pdf');
+    }
+
+    public function keterlambatan(Request $request)
+    {
+        $tgl = explode(" - ",$request->tgl);
+
+        $today = Carbon::now();
+        $data = Pemesanan::with(['user'])
+        ->whereBetween('tgl_penyewaan', $tgl)
+        ->latest()->get();
+        // $data = Pemesanan::where(function ($query) use ($today) {
+        //     $query->whereDate('tgl_penyewaan', '>=', $today)
+        //         ->orWhere(function ($subquery) use ($today) {
+        //             $subquery->whereDate('tgl_penyewaan', '=', $today)
+        //                 ->whereTime('jam_pengambilan', '>=', $today->toTimeString());
+        //         });
+        // })
+        // ->where(function ($query) {
+        //     $query->whereDate('tgl_penyewaan', '<=', Carbon::now()->addDays(7))
+        //         ->orWhere(function ($subquery) {
+        //             $subquery->whereDate('tgl_penyewaan', '=', Carbon::now()->addDays(7))
+        //                 ->whereTime('jam_pengambilan', '<=', Carbon::now()->addDays(7)->toTimeString());
+        //         });
+        // })
+        // ->get();
+        // dd($data);
+        $config = [
+            'format' => 'A4-L' // Landscape
+        ];
+
+        $pdf = PDF::loadView('pdf.keterlambatan', [
+            'data' => $data,
+            'tgl' =>$tgl
+        ], [ ], $config);
+
+        return $pdf->stream('Laporan Keterlambatan.pdf');
     }
 }

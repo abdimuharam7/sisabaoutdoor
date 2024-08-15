@@ -28,7 +28,7 @@ class LaporanController extends Controller
     public function pengembalian(){
 
 
-        return view('admin.laporan.pemesanan');
+        return view('admin.laporan.pengembalian');
     }
 
 
@@ -36,5 +36,11 @@ class LaporanController extends Controller
 
 
         return view('admin.laporan.pembelian');
+    }
+
+    public function keterlambatan(){
+
+
+        return view('admin.laporan.keterlambatan');
     }
 }

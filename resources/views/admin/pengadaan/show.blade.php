@@ -25,7 +25,7 @@
                     <button data-modal-target="alertSukses" data-modal-toggle="alertSukses" class="block me-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                         Setuju
                     </button>
-                    <button data-modal-target="alertTolak" data-modal-toggle="alertSukses" class="block ms-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-500 dark:focus:ring-red-800" type="button">
+                    <button data-modal-target="alertTolak" data-modal-toggle="alertTolak" class="block ms-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-500 dark:focus:ring-red-800" type="button">
                         Tolak
                     </button>
                     @elseif ($data->status == 'disetujui')

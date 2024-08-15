@@ -22,24 +22,27 @@
             <div class="p-4 md:p-5 space-y-4">
                 <div class="flex flex-col gap-1">
                     <label for="tgl_penyewaan">Tanggal Penyewaan</label>
-                    <input class="rounded-lg" type="date" name="tgl_penyewaan" id="tgl_penyewaan" required>
+                    <x-text-input id="tgl_penyewaan" class="block mt-1 w-full" type="date" name="tgl_penyewaan"/>
+                    <x-input-error :messages="$errors->get('tgl_penyewaan')" class="mt-2" />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="durasi">Durasi</label>
-                    <input class="rounded-lg" type="number" name="durasi" id="durasi" required>
+                    <x-text-input id="durasi" class="block mt-1 w-full" type="number" name="durasi"/>
+                    <x-input-error :messages="$errors->get('durasi')" class="mt-2" />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="jam_pengambilan">Jam Pengambilan</label>
-                    <input class="rounded-lg" type="time" name="jam_pengambilan"  id="jam_pengambilan" required>
+                    <x-text-input id="jam_pengambilan" class="block mt-1 w-full" type="text" name="jam_pengambilan"/>
+                    <x-input-error :messages="$errors->get('jam_pengambilan')" class="mt-2" />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="jaminan">Jaminan</label>
-                    <select class="rounded-lg" name="jaminan" id="jaminan" required>
-                        <option value="" disabled selected > Pilih Jaminan</option>
-                        <option value="KTP">KTP</option>
-                        <option value="SIM">SIM</option>
-                        <option value="KPelajar">Kartu Pelajar</option>
-                    </select>
+                    <x-select-field id="jamninan" name="jaminan" :options="[
+                        ['label' => 'KTP', 'value' => 'KTP'],
+                        ['label' => 'SIM', 'value' => 'SIM'],
+                        ['label' => 'KPelajar', 'value' => 'Kartu Pelajar'],
+                    ]"/>
+                    <x-input-error :messages="$errors->get('jam_pengambilan')" class="mt-2" />
                 </div>
             </div>
             <!-- Modal footer -->

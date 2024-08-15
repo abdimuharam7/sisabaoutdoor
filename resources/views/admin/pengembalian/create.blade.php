@@ -11,7 +11,6 @@
             <form action="{{ route('admin.pengembalian.store')}}" method="POST">
                 @csrf
                 <div class="grid grid-cols-2 gap-3">
-
                     <div class="mb-2">
                         <x-input-label for="field-pemesanan_id" value="Pemesanan" />
                         <x-select-field id="pemesanan_id" name="pemesanan_id" placeholder="Pilih"
@@ -212,7 +211,7 @@
             }
 
             if(hilang){
-                denda_hilang = (harga*.5)*hilang;
+                denda_hilang = (harga*.7)*hilang;
             }
 
             var total_denda = denda_ringan + denda_sedang + denda_total + denda_hilang + lambat;

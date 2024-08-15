@@ -13,7 +13,17 @@
     
                         <div class="mb-2">
                             <x-input-label for="field-pelanggan_id" value="Pelanggan" />
-                            <x-select-field id="pelanggan_id" name="pelanggan_id" placeholder="Pilih" :options="$konsumen"/>
+                            <div class="flex">
+                                <div class="w-9/12">
+                                    <x-select-field id="pelanggan_id" name="pelanggan_id" placeholder="Pilih" :options="$konsumen"/>
+                                </div>
+                                <div class="w-3/12 my-auto ps-2">
+                                    
+                                <button data-modal-target="tambah-pelanggan" data-modal-toggle="tambah-pelanggan" type="button" class="py-2 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                </div>
+                            </div>
                             <x-input-error :messages="$errors->get('pelanggan_id')" class="mt-2" />
                         </div>
                         <div class="mb-2">
@@ -125,7 +135,7 @@
                       </button>
                 </form>
             </div>
-            
+            <x-modal.tambah-pelanggan/>
         </div>
         @push('scripts')
         <script>

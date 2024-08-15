@@ -43,6 +43,11 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total_beli = 0;
+                    $total_tolak = 0;
+                    $total_pending = 0;
+                @endphp
                 @foreach ($data as $item)
                 <tr>
                     <td class>{{ $loop->index+1 }}</td>
@@ -57,6 +62,14 @@
                         @foreach ($item->item as $items)
                         @php
                             $total += $items->harga * $items->jumlah;
+                            if($item->status == 'pending'){
+                                $total_beli += $total;
+                            }elseif($item->status == 'ditolak'){
+                                $total_tolak += $total;
+                            }else{
+                                $total_pending += $total;
+                            }
+
                         @endphp
                         @endforeach
                         <p> Rp. {{ number_format($total, 0, ',', '.') }}</p>
@@ -64,6 +77,20 @@
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">Total Pembelian Disetujui</td>
+                    <td>Rp. {{ number_format($total_beli, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5">Total Pembelian Ditolak</td>
+                    <td>Rp. {{ number_format($total_tolak, 0, ',', '.') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5">Total Pembelian Pending</td>
+                    <td>Rp. {{ number_format($total_pending, 0, ',', '.') }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 

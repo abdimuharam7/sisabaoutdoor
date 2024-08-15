@@ -45,8 +45,17 @@
     </div>
 
     @push('scripts')
-    <script>
+    @if($errors->any())
+        <script>
             
+            const modal = new Modal(document.getElementById('tambah-pemesanan'));
+                modal.show();
+        </script>
+    @endif
+    <script>
+        
+        // new Modal($('#tambah-pemesanan'), {}).show();
+
         function calculateTotal() {
             // var total = 0;
             $('ul#keranjang li').each(function() {

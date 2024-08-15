@@ -78,9 +78,16 @@ class PengembalianController extends Controller
             $itemPesanan->telat = $item['lambat'];
             $itemPesanan->total = $item['denda'];
             $itemPesanan->save();
+
+            $rusak = $item['rusak_ringan'] + $item['rusak_sedang'] + $item['rusak_total'] + $item['hilang'];
+
+            $pesanan = ItemPemesanan::where('id', $item['pesan_line_id'])->first();
+            $kt = Katalog::where('id', $item['katalog_id'])->first();
+            $kt->stok += $pesanan - $rusak;
+            $kt->save();
         }
 
-        return redirect()->back()->with(['success' => 'Berhasil Membuat Pesanan']);
+        return redirect()->route('admin.pengembalian.show', $data->id)->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
     /**

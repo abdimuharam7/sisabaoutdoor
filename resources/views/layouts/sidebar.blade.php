@@ -72,6 +72,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('admin.laporan.keterlambatan')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <i class="fas fa-print w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                <span class="flex-1 ms-3 whitespace-nowrap">Laporan Keterlambatan</span>
+            </a>
+        </li>
+        <li>
            <form action="{{route('admin.logout')}}" class="w-full" method="POST">
                @csrf
                <button type="submit" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -101,20 +107,26 @@
             <ul id="submenu" class="ps-3">
                 <li>
                    <a href="{{ route('admin.laporan.pemesanan') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                       <i class="fas fa-shopping-cart w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <i class="fas fa-chevron-circle-right w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                        <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pemesanan</span>
                    </a>
                </li>
                <li>
                    <a href="{{ route('admin.laporan.pengembalian')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                       <i class="fas fa-undo-alt w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <i class="fas fa-chevron-circle-right w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                        <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pengembalian</span>
                    </a>
                </li>
                <li>
                    <a href="{{ route('admin.laporan.pembelian')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                       <i class="fas fa-shop w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <i class="fas fa-chevron-circle-right w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                        <span class="flex-1 ms-3 whitespace-nowrap">Laporan Pembelian</span>
+                   </a>
+               </li>
+               <li>
+                   <a href="{{ route('admin.laporan.keterlambatan')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                       <i class="fas fa-chevron-circle-right w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                       <span class="flex-1 ms-3 whitespace-nowrap">Laporan Keterlambatan</span>
                    </a>
                </li>
             </ul>

@@ -138,8 +138,9 @@ class KatalogController extends Controller
      * @param  \App\Models\Katalog  $katalog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Katalog $katalog)
+    public function destroy($id)
     {
+        $katalog = Katalog::where('id', $id)->first();
         $pathRemove = public_path('uploads/' .$katalog->foto);
         if(file_exists($pathRemove)){
             unlink($pathRemove);

@@ -91,6 +91,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/', 'PemesananController@index')->name('index');
                 Route::get('/create', 'PemesananController@create')->name('create');
                 Route::get('/report', 'PemesananController@report')->name('report');
+                Route::get('/keterlambatan', 'PemesananController@keterlambatan')->name('keterlambatan');
                 Route::post('/store', 'PemesananController@store')->name('store');
                 Route::get('/{id}', 'PemesananController@show')->name('show');
                 Route::get('/{id}/pdf', 'PemesananController@pdf')->name('pdf');
@@ -131,6 +132,7 @@ Route::namespace('App\Http\Controllers\Admin')->group(function(){
                 Route::get('/pemesanan', 'LaporanController@pemesanan')->name('pemesanan');
                 Route::get('/pembelian', 'LaporanController@pembelian')->name('pembelian');
                 Route::get('/pengembalian', 'LaporanController@pengembalian')->name('pengembalian');
+                Route::get('/keterlambatan', 'LaporanController@keterlambatan')->name('keterlambatan');
             });
 
             Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
