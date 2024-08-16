@@ -254,8 +254,10 @@ class PemesananController extends Controller
         
         $data = Pemesanan::where('id', $id)
         ->first();
+
         $pdf = PDF::loadView('pdf.invoice', [
             'data' => $data,
+            'type' => 'invoice'
         ], [ ], [
             'format' => 'A4-P'
         ]);
