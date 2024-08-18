@@ -13,7 +13,7 @@
                     <a href="{{ route('admin.pengembalian.pdf', $data->id) }}" class="bg-green-500 me-3 text-white rounded-lg px-5 py-2">
                         Surat Pengembalian
                     </a>
-                    <a href="{{ route('admin.pengembalian.create') }}" class="bg-green-500 me-3 text-white rounded-lg px-5 py-2">
+                    <a href="{{ route('admin.pengembalian.edit', $data->id) }}" class="bg-green-500 me-3 text-white rounded-lg px-5 py-2">
                         Ubah
                     </a>
                     <form action="{{ route('admin.pengembalian.destroy', $data->id) }}" method="post">

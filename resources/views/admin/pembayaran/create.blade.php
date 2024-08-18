@@ -10,7 +10,6 @@
                 <form action="{{ route('admin.pemesanan.store')}}" method="POST">
                     @csrf
                     <div class="grid grid-cols-2 gap-3">
-    
                         <div class="mb-2">
                             <x-input-label for="field-pelanggan_id" value="Pelanggan" />
                             <div class="flex">
@@ -58,6 +57,14 @@
                                 ['label' => 'Ditolak', 'value' => 'Ditolak'],
                             ]"/>
                             <x-input-error :messages="$errors->get('jaminan')" class="mt-2" />
+                        </div>
+                        <div class="mb-2">
+                            <x-input-label for="field-status" value="Status Pembayaran" />
+                            <x-select-field id="status_pembayaran" name="status_pembayaran" placeholder="Pilih" :options="[
+                                ['label' => 'Dibayar', 'value' => 'Dibayar'],
+                                ['label' => 'Belum Bayar', 'value' => 'Menunggu'],
+                            ]" />
+                            <x-input-error :messages="$errors->get('status_pembayaran')" class="mt-2" />
                         </div>
                     </div>
                     

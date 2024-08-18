@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use PDF;
+use Illuminate\Support\Facades\Validator;
 class PengembalianController extends Controller
 {
     /**
@@ -38,9 +39,10 @@ class PengembalianController extends Controller
      */
     public function create()
     {
+        $pengembalian = Pengembalian::latest()->get()->pluck('pemesanan_id');
 
         $pemesanan = Pemesanan::select('kode_transaksi as label', 'id as value')
-        ->where('status_penyewaan', 'diterima')->get()->toArray();
+        ->where('status_penyewaan', 'diterima')->whereNotIn('id', $pengembalian)->get()->toArray();
 
         return view('admin.pengembalian.create',compact('pemesanan'));
     }
@@ -55,39 +57,57 @@ class PengembalianController extends Controller
     {
         // dd($request->all());
 
-        $date = strtotime(date("Y-m-d H:i:s"));
-        $kode = IdGenerator::generate(['table' => 'pengembalians', 'field' => 'kode', 'length' => 17, 'prefix' => 'RTN-' . $date]);
-        $data = new Pengembalian();
-        $data->kode = $kode;
-        $data->pemesanan_id = $request->pemesanan_id;
-        $data->tgl = Carbon::parse($request->tgl);
-        $data->telat = $request->lambat;
-        $data->status = $request->status;
-        $data->total = $request->total;
-        $data->save();
 
-        foreach ($request->lines as $item) {
-            $itemPesanan = new Denda();
-            $itemPesanan->pengembalian_id = $data->id;
-            $itemPesanan->pesan_item_id = $item['pesan_line_id'];
-            $itemPesanan->katalog_id = $item['produk_id'];
-            $itemPesanan->rusak_ringan = $item['rusak_ringan'];
-            $itemPesanan->rusak_sedang = $item['rusak_sedang'];
-            $itemPesanan->rusak_total = $item['rusak_total'];
-            $itemPesanan->hilang = $item['hilang'];
-            $itemPesanan->telat = $item['lambat'];
-            $itemPesanan->total = $item['denda'];
-            $itemPesanan->save();
+        $rules = [
+            'pemesanan_id' => 'required',
+            'tgl' => 'required',
+        ];
 
-            $rusak = $item['rusak_ringan'] + $item['rusak_sedang'] + $item['rusak_total'] + $item['hilang'];
+        $pesan = [
+            'tgl.required' => 'Tanggal harus diisi',
+            'pemesanan_id.required' => 'Pesanan harus diisi!'
+        ];
 
-            $pesanan = ItemPemesanan::where('id', $item['pesan_line_id'])->first();
-            $kt = Katalog::where('id', $item['katalog_id'])->first();
-            $kt->stok += $pesanan - $rusak;
-            $kt->save();
+        $validator = Validator::make($request->all(), $rules, $pesan);
+        if ($validator->fails()){
+            // dd($validator->errors());
+            return back()->withErrors($validator->errors())->withInput();
+        }else{
+            // dd($request->all());
+            $date = strtotime(date("Y-m-d H:i:s"));
+            $kode = IdGenerator::generate(['table' => 'pengembalians', 'field' => 'kode', 'length' => 17, 'prefix' => 'RTN-' . $date]);
+            $data = new Pengembalian();
+            $data->kode = $kode;
+            $data->pemesanan_id = $request->pemesanan_id;
+            $data->tgl = Carbon::parse($request->tgl);
+            $data->telat = $request->lambat;
+            $data->status = $request->status;
+            $data->total = $request->total;
+            $data->save();
+
+            foreach ($request->lines as $item) {
+                $itemPesanan = new Denda();
+                $itemPesanan->pengembalian_id = $data->id;
+                $itemPesanan->pesan_item_id = $item['pesan_line_id'];
+                $itemPesanan->katalog_id = $item['produk_id'];
+                $itemPesanan->rusak_ringan = $item['rusak_ringan'];
+                $itemPesanan->rusak_sedang = $item['rusak_sedang'];
+                $itemPesanan->rusak_total = $item['rusak_total'];
+                $itemPesanan->hilang = $item['hilang'];
+                $itemPesanan->telat = $item['lambat'];
+                $itemPesanan->total = $item['denda'];
+                $itemPesanan->save();
+
+                $rusak = $item['rusak_ringan'] + $item['rusak_sedang'] + $item['rusak_total'] + $item['hilang'];
+
+                $pesanan = ItemPemesanan::where('id', $item['pesan_line_id'])->first();
+                $kt = Katalog::where('id', $item['produk_id'])->first();
+                $kt->stok += $pesanan->jumlah - $rusak;
+                $kt->save();
+            }
+
+            return redirect()->route('admin.pengembalian.show', $data->id)->with(['success' => 'Berhasil Membuat Pesanan']);
         }
-
-        return redirect()->route('admin.pengembalian.show', $data->id)->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
     /**
@@ -126,17 +146,57 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pemesanan  $pemesanan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pemesanan $pemesanan)
+    public function update(Request $request,$id)
     {
-    //    $request->validate([
-    //        'status_penyewaan' => 'required|in:menunggu,disewa,selesai',
-    //        'status_pembayaran' => 'required|in:menunggu,dibayar,dibatalkan',
-    //    ]);
+        $rules = [
+            'pemesanan_id' => 'required',
+            'tgl' => 'required',
+        ];
 
-            $pemesanan->status_penyewaan = $request->status_penyewaan;
-            $pemesanan->status_pembayaran = $request->status_pembayaran;
-            $pemesanan->save();
-           return redirect()->route('pemesanan.index')->with('success', 'Data pemesanan berhasil diperbarui.');
+        $pesan = [
+            'tgl.required' => 'Tanggal harus diisi',
+            'pemesanan_id.required' => 'Pesanan harus diisi!'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $pesan);
+        if ($validator->fails()){
+            // dd($validator->errors());
+            return back()->withErrors($validator->errors())->withInput();
+        }else{
+            $date = strtotime(date("Y-m-d H:i:s"));
+            $kode = IdGenerator::generate(['table' => 'pengembalians', 'field' => 'kode', 'length' => 17, 'prefix' => 'RTN-' . $date]);
+            $data = Pengembalian::where('id', $id)->first();
+            $data->kode = $kode;
+            $data->pemesanan_id = $request->pemesanan_id;
+            $data->tgl = Carbon::parse($request->tgl);
+            $data->telat = $request->lambat;
+            $data->status = $request->status;
+            $data->total = $request->total;
+            $data->save();
+
+            foreach ($request->lines as $item) {
+                $itemPesanan = new Denda();
+                $itemPesanan->pengembalian_id = $data->id;
+                $itemPesanan->pesan_item_id = $item['pesan_line_id'];
+                $itemPesanan->katalog_id = $item['produk_id'];
+                $itemPesanan->rusak_ringan = $item['rusak_ringan'];
+                $itemPesanan->rusak_sedang = $item['rusak_sedang'];
+                $itemPesanan->rusak_total = $item['rusak_total'];
+                $itemPesanan->hilang = $item['hilang'];
+                $itemPesanan->telat = $item['lambat'];
+                $itemPesanan->total = $item['denda'];
+                $itemPesanan->save();
+
+                $rusak = $item['rusak_ringan'] + $item['rusak_sedang'] + $item['rusak_total'] + $item['hilang'];
+
+                $pesanan = ItemPemesanan::where('id', $item['pesan_line_id'])->first();
+                $kt = Katalog::where('id', $item['produk_id'])->first();
+                $kt->stok += $pesanan->jumlah - $rusak;
+                $kt->save();
+            }
+
+           return redirect()->route('admin.pengembalian.show', $data->id)->with('success', 'Data pemesanan berhasil diperbarui.');
+        }
    }
 
     /**

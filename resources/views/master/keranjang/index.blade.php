@@ -18,7 +18,7 @@
                                     <button type="button" class="btn-dcm">-</button>
                                     <input value="{{ $item->id }}" type="hidden" class="cart_id" />
                                     <input value="{{ $item->katalog->harga }}" type="hidden" class="harga" />
-                                    <input value="{{ $item->jumlah }}" type="number" class="w-12 rounded-lg h-min qty" name="item[{{ $item->id }}][jumlah]" id="">
+                                    <input value="{{ $item->jumlah }}" type="number" class="w-12 rounded-lg h-min qty" name="item[{{ $item->id }}][jumlah]" min="1" max="{{ $item->katalog->stok }}" id="">
                                     <input value="{{ $item->katalog->id }}" type="hidden" name="item[{{ $item->id }}][id]" id="">
                                     <button type="button" class="btn-inc">+</button>
                                 </div>
@@ -35,7 +35,8 @@
                     <a href="{{ route('katalog') }}" class="py-3 text-center bg-blue-500 text-white w-full rounded-lg hover:bg-opacity-90">
                         Tambahkan Barang Lain
                     </a>
-                    <button data-modal-target="tambah-pemesanan" data-modal-toggle="tambah-pemesanan" type="button" class="py-3 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90">
+                    <button id="btn-pesan" data-modal-target="tambah-pemesanan" {{ count($cart) ? '' : 'disabled="disabled"'}} data-modal-toggle="tambah-pemesanan" type="button" 
+                    class="py-3 text-center bg-green-500 text-white w-full rounded-lg hover:bg-opacity-90 disabled:bg-green-300 disabled:cursor-not-allowed">
                         Sewa Sekarang
                     </button>
                 </div>
@@ -77,6 +78,11 @@
                             // alert(data.fail);
                             if(data.fail == false){
                                 line.remove();
+
+
+                                if(!$('ul#keranjang li').length){
+                                    $('#btn-pesan').prop( "disabled", true );
+                                }
                             }
                         },
                     });
@@ -119,9 +125,15 @@
 
             $('.btn-inc').click(function() {
                 var $qty = $(this).siblings('.qty');
+                var max = $qty.attr('max');
                 var currentVal = parseInt($qty.val());
                 if (!isNaN(currentVal)) {
-                    $qty.val(currentVal + 1);
+                    if (currentVal < max) {
+                        $qty.val(currentVal + 1);
+                    } else {
+                        $qty.val(currentVal);
+                    }
+
                 } else {
                     $qty.val(0);
                 }

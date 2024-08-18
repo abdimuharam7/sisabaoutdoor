@@ -40,7 +40,7 @@
                     <x-select-field id="jamninan" name="jaminan" :options="[
                         ['label' => 'KTP', 'value' => 'KTP'],
                         ['label' => 'SIM', 'value' => 'SIM'],
-                        ['label' => 'KPelajar', 'value' => 'Kartu Pelajar'],
+                        ['label' => 'Kartu Pelajar', 'value' => 'KPelajar'],
                     ]"/>
                     <x-input-error :messages="$errors->get('jam_pengambilan')" class="mt-2" />
                 </div>

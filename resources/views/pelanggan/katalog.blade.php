@@ -23,7 +23,9 @@
                     @csrf
                     @method('POST')
                     <input type="hidden" name="katalog_id" value="{{ $item->id }}">
-                    <button type="submit" class="bg-green-500 rounded-lg text-white w-full py-1">Tambah Keranjang</button>
+                    <button type="submit" {{ $item->stok ? '' : 'disabled="disabled"' }}  class="bg-green-500 rounded-lg text-white w-full py-1 disabled:bg-green-300 disabled:cursor-not-allowed">
+                        Tambah Keranjang
+                    </button>
                 </form>
             </div>
 

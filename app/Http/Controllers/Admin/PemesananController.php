@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 class PemesananController extends Controller
 {
     /**
@@ -53,27 +54,54 @@ class PemesananController extends Controller
     {
         // dd($request->all());
 
-        $date = strtotime(date("Y-m-d H:i:s"));
-        $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
-        $pemesanan = new Pemesanan();
-        $pemesanan->kode_transaksi = $kode;
-        $pemesanan->tgl_penyewaan = $request->tgl;
-        $pemesanan->durasi = $request->lama;
-        $pemesanan->jam_pengambilan = $request->waktu;
-        $pemesanan->jaminan = $request->jaminan;
-        $pemesanan->user_id = $request->pelanggan_id;
-        $pemesanan->status_penyewaan = $request->status;
-        $pemesanan->save();
+        $rules = [
+            'tgl' => 'required',
+            'lama' => 'required',
+            'jaminan' => 'required',
+            'pelanggan_id' => 'required',
+            'status' => 'required',
+            'status_pembayaran' => 'required',
+            'lines.*.katalog_id' => 'required'
+        ];
 
-        foreach ($request->lines as $item) {
-            $itemPesanan = new ItemPemesanan();
-            $itemPesanan->katalog_id = $item['produk_id'];
-            $itemPesanan->pemesanan_id = $pemesanan->id;
-            $itemPesanan->jumlah = $item['qty'];
-            $itemPesanan->save();
+        $pesan = [
+            'tgl.required' => 'Tanggal harus diisi',
+            'lama.required' => 'Durasi harus diisi!',
+            'jaminan.required' => 'Jaminan harus diisi',
+            'pelanggan_id.required' => 'Pelanggan harus diisi',
+            'status.required' => 'Status Penyewaan harus diisi',
+            'status_pembayaran.required' => 'Status Pembayaran harus diisi',
+            'lines.*' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $pesan);
+        if ($validator->fails()){
+            // dd($validator->errors());
+            return back()->withErrors($validator->errors())->withInput();
+        }else{
+            $date = strtotime(date("Y-m-d H:i:s"));
+            $kode = IdGenerator::generate(['table' => 'pemesanans', 'field' => 'kode_transaksi', 'length' => 17, 'prefix' => 'TRX-' . $date]);
+            $pemesanan = new Pemesanan();
+            $pemesanan->kode_transaksi = $kode;
+            $pemesanan->tgl_penyewaan = $request->tgl;
+            $pemesanan->durasi = $request->lama;
+            $pemesanan->jam_pengambilan = $request->waktu;
+            $pemesanan->jaminan = $request->jaminan;
+            $pemesanan->user_id = $request->pelanggan_id;
+            $pemesanan->status_penyewaan = $request->status;
+            $pemesanan->status_pembayaran = $request->status_pembayaran;
+            $pemesanan->save();
+
+            foreach ($request->lines as $item) {
+                $itemPesanan = new ItemPemesanan();
+                $itemPesanan->katalog_id = $item['produk_id'];
+                $itemPesanan->pemesanan_id = $pemesanan->id;
+                $itemPesanan->jumlah = $item['qty'];
+                $itemPesanan->save();
+            }
         }
 
-        return redirect()->back()->with(['success' => 'Berhasil Membuat Pesanan']);
+        return redirect()->route('admin.pemesanan.show', $pemesanan->id)->with(['success' => 'Berhasil Membuat Pesanan']);
     }
 
     /**
@@ -176,7 +204,7 @@ class PemesananController extends Controller
     }
 
     
-    public function pdf($id)
+    public function pdf($id, Request $request)
     {
         $data = Pemesanan::where('id', $id)
         ->first();
