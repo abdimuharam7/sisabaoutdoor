@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
                     if($tmpo < $now){
                         $d->status_penyewaan = 'Ditolak';
                         $d->save();
-                    }
+                    } 
                 }
             //Pengecekan apakah cronjob berhasil atau tidak
         //Mencatat info log 

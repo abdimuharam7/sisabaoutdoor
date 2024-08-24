@@ -75,7 +75,7 @@ class PengadaanController extends Controller
             $itemPesanan->save();
         }
 
-        return redirect()->back()->with(['success' => 'Berhasil Membuat Pengajuan Pengadaan']);
+        return redirect()->route('admin.pengadaan.show', $data->id)->with(['success' => 'Berhasil Membuat Pengajuan Pengadaan']);
     }
 
     public function status($id, Request $request)

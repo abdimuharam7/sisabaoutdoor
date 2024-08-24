@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
+use Mail;
+use App\Mail\InvoiceMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 class PemesananController extends Controller
@@ -61,7 +63,7 @@ class PemesananController extends Controller
             'pelanggan_id' => 'required',
             'status' => 'required',
             'status_pembayaran' => 'required',
-            'lines.*.katalog_id' => 'required'
+            'lines.*.produk_id' => 'required'
         ];
 
         $pesan = [
@@ -76,7 +78,7 @@ class PemesananController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $pesan);
         if ($validator->fails()){
-            // dd($validator->errors());
+            dd($validator->errors());
             return back()->withErrors($validator->errors())->withInput();
         }else{
             $date = strtotime(date("Y-m-d H:i:s"));
@@ -99,6 +101,20 @@ class PemesananController extends Controller
                 $itemPesanan->jumlah = $item['qty'];
                 $itemPesanan->save();
             }
+
+            
+            $pdf = PDF::loadView('pdf.invoice', [
+                'data' => $data,
+                'type' => 'invoice'
+            ], [ ], [
+                'format' => 'A4-P'
+            ]);
+    
+            Mail::send('emails.invoice', $data->toArray(), function($message)use($data, $pdf) {
+                $message->to($data->user->email, $data->user->nama)
+                        ->subject("Invoice ". $data->kode_transaksi)
+                        ->attachData($pdf->output(), "Invoice ". $data->kode_transaksi ." .pdf");
+            });
         }
 
         return redirect()->route('admin.pemesanan.show', $pemesanan->id)->with(['success' => 'Berhasil Membuat Pesanan']);
