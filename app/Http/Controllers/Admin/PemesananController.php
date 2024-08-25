@@ -78,7 +78,7 @@ class PemesananController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $pesan);
         if ($validator->fails()){
-            dd($validator->errors());
+            // dd($validator->errors());
             return back()->withErrors($validator->errors())->withInput();
         }else{
             $date = strtotime(date("Y-m-d H:i:s"));
