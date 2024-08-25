@@ -104,16 +104,16 @@ class PemesananController extends Controller
 
             
             $pdf = PDF::loadView('pdf.invoice', [
-                'data' => $data,
+                'data' => $pemesanan,
                 'type' => 'invoice'
             ], [ ], [
                 'format' => 'A4-P'
             ]);
     
-            Mail::send('emails.invoice', $data->toArray(), function($message)use($data, $pdf) {
-                $message->to($data->user->email, $data->user->nama)
-                        ->subject("Invoice ". $data->kode_transaksi)
-                        ->attachData($pdf->output(), "Invoice ". $data->kode_transaksi ." .pdf");
+            Mail::send('emails.invoice', $data->toArray(), function($message)use($pemesanan, $pdf) {
+                $message->to($pemesanan->user->email, $data->user->nama)
+                        ->subject("Invoice ". $pemesanan->kode_transaksi)
+                        ->attachData($pdf->output(), "Invoice ". $pemesanan->kode_transaksi ." .pdf");
             });
         }
 
