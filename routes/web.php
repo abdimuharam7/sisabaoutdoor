@@ -148,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/dashboard',function(){
         return view('pelanggan.dashboard');
     })->name('pelanggan.dashboard');
+    Route::get('pelanggan/dashboard', [PelangganController::class, 'dashboard'])->name('dashboard');
     Route::get('pelanggan/aturan', [PelangganController::class, 'aturan'])->name('aturan');
     Route::get('pelanggan/katalog', [PelangganController::class, 'katalog'])->name('katalog');
     Route::post('pelanggan/pemesanan',[PemesananController::class,'store'])->name('pemesanan.store');

@@ -126,14 +126,14 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr>
+                            {{-- <tr>
                                 <td colspan="5" class="px-2 py-4">
                                     <button type="button" onclick="addRow()"
                                         class="bg-blue-600 border focus:outline-none font-medium py-2 rounded text-center text-white w-full">
                                         Tambah
                                     </button>
                                 </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td colspan="3"
                                     class="dark:text-neutral-200 font-bold px-3 py-2 text-end text-gray-800 text-lg whitespace-nowrap">

@@ -15,11 +15,11 @@
                         {{ __('DASHBOARD') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('aturan')" :active="request()->routeIs('aturan')">
+                    <x-nav-link href="#peraturan" :active="request()->routeIs('aturan')">
                         {{ __('ATURAN') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('katalog')" :active="request()->routeIs('katalog')">
+                    <x-nav-link href="#katalog" :active="request()->routeIs('katalog')">
                         {{ __('SEWA') }}
                     </x-nav-link>
 

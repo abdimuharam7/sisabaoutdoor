@@ -50,7 +50,7 @@
                             <x-input-error :messages="$errors->get('jaminan')" class="mt-2" />
                         </div>
                         <div class="mb-2">
-                            <x-input-label for="field-status" value="status" />
+                            <x-input-label for="field-status" value="Status Penyewaan" />
                             <x-select-field id="status" name="status" placeholder="Pilih" :options="[
                                 ['label' => 'Menunggu', 'value' => 'Menunggu'],
                                 ['label' => 'Diterima', 'value' => 'Diterima'],

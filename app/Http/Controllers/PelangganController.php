@@ -83,6 +83,11 @@ class PelangganController extends Controller
         //
     }
 
+    public function dashboard(){
+        $katalogs = Katalog::all();
+
+    return view("pelanggan.dashboard", compact("katalogs"));
+    }
     public function katalog(){
         $katalogs = Katalog::all();
 

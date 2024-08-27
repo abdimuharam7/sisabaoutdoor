@@ -48,33 +48,48 @@
             </div>
             
             <table id="table-detail" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr class="divide-x divide-gray-200">
-                        <th scope="col" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                <thead class="border border-gray-300 bg-gray-50">
+                    <tr class=" ">
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Produk
                         </th>
-                        <th width="70px" rowspan="2" scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                        <th width="50px" rowspan="2" scope="col" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Jumlah
                         </th>
-                        <th colspan="3" scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
-                            Kerusakan
+                        <th colspan="3" scope="col" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Rusak
                         </th>
-                        <th scope="col" width="70px" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
-                            Kehilangan
+                        <th scope="col" width="70px" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Hilang
                         </th>
-                        <th scope="col" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Keterangan
+                        </th>
+                        <th colspan="4" scope="col" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Denda
                         </th>
                     </tr>
                     <tr class="divide-x divide-y divide-gray-300">
-                        <th scope="col" width="70px" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                        <th scope="col" width="50px" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Ringan 10%
                         </th>
-                        <th scope="col" width="70px" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                        <th scope="col" width="50px" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Sedang 25%
                         </th>
-                        <th scope="col" width="70px" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                        <th scope="col" width="50px" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                             Total 50%
+                        </th>
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Rusak
+                        </th>
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Telat
+                        </th>
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Hilang
+                        </th>
+                        <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                            Total
                         </th>
                     </tr>
                 </thead>
@@ -83,6 +98,13 @@
                     @foreach ($data->denda as $d)
                     
                     @php
+
+                        $hrg = $d->katalog->harga_beli ?? 0;
+                        $ringan = (($hrg*.1)*$d->rusak_ringan);
+                        $sedang = (($hrg*.25)*$d->rusak_sedang);
+                        $rusak_total = (($hrg*.5)*$d->rusak_total);
+                        $showRusak = ($ringan + $sedang + $rusak_total);
+                        $showHilang = ($hrg*.7)*$d->hilang;
                         $total = $d->total;
                     @endphp
 
@@ -107,20 +129,32 @@
                                 {{ $d->hilang  ?? 0}}
                             </td>
                             <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
-                                <span class="showDenda">{{ $total }}</span>
+                                {{ $d->keterangan ?? '-' }}
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                <span class="showDenda">Rp. {{ number_format($showRusak,0,',','.') }}</span>
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                <span class="showDenda">Rp. {{ number_format($showHilang,0,',','.') }}</span>
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                <span class="showDenda">Rp. {{ number_format($d->telat,0,',','.') }}</span>
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                <span class="showDenda">Rp. {{ number_format($d->total,0,',','.') }}</span>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6"
+                        <td colspan="8"
                             class="dark:text-neutral-200 font-bold px-3 py-2 text-end text-gray-800 text-lg whitespace-nowrap">
                             Total Denda
                         </td>
                         <td 
                             class="dark:text-neutral-200 font-bold px-3 py-2 text-end text-gray-800 text-lg whitespace-nowrap">
-                            <span class="showTotal">Rp. 0</span>
+                            <span class="showTotal">Rp. {{ $total ?? 0}}</span>
                         </td>
                     </tr>
                 </tfoot>

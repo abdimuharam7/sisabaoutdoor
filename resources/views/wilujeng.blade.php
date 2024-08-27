@@ -38,7 +38,7 @@
     <main>
         <h2>Selamat Datang di SABA Outdoor Equipment Rent</h2>
         <h3>Kami menyediakan berbagai peralatan outdoor untuk kebutuhan petualangan Anda.</h3>
-
+        <p>Untuk bisa mengakses penyewaan anda harus LOGIN pada tomvol masuk dan register pada tombol mendaftar terlebih dahulu</p>
         <div class="photos">
             <img src="{{ asset('gambar/carrier.jpeg') }}" alt="carrier">
             <img src="{{ asset('gambar/sepatu.jpg') }}" alt="sepatu">

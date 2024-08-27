@@ -56,7 +56,7 @@
                             <th scope="col" width="70px" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
                                 Kehilangan
                             </th>
-                            <th scope="col" rowspan="2" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
+                            <th colspan="4" scope="col" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
                                 Denda
                             </th>
                         </tr>
@@ -70,6 +70,18 @@
                             <th scope="col" width="70px" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase">
                                 Total 50%
                             </th>
+                            <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                                Rusak
+                            </th>
+                            <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                                Telat
+                            </th>
+                            <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                                Hilang
+                            </th>
+                            <th scope="col" rowspan="2" class="px-3 py-3 border border-gray-300 text-center text-sm font-medium text-gray-500 uppercase">
+                                Total
+                            </th>
                         </tr>
                     </thead>
                     
@@ -77,7 +89,13 @@
                         @foreach ($data->denda as $d)
                         
                         @php
-                            $total = $d->total;
+                        $hrg = $d->katalog->harga_beli ?? 0;
+                        $ringan = (($hrg*.1)*$d->rusak_ringan);
+                        $sedang = (($hrg*.25)*$d->rusak_sedang);
+                        $rusak_total = (($hrg*.5)*$d->rusak_total);
+                        $showRusak = ($ringan + $sedang + $rusak_total);
+                        $showHilang = ($hrg*.7)*$d->hilang;
+                        $total = $d->total;
                         @endphp
 
                             <tr class="row-${idx}">
@@ -104,18 +122,27 @@
                                     <x-text-input id="field-hilang" class="block mt-1 w-full line-hilang" type="number"
                                         min="0" value="{{ $d->hilang }}" name="lines[${idx}][hilang]" />
                                 </td>
+                                <td class="px-3 py-2 border border-gray-300 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                    <span class="showRusak">Rp. {{ number_format($showRusak,0,',','.') }}</span>
+                                </td>
+                                <td class="px-3 py-2 border border-gray-300 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                    <span class="showHilang">Rp. {{ number_format($showHilang,0,',','.') }}</span>
+                                </td>
+                                <td class="px-3 py-2 border border-gray-300 whitespace-nowrap text-gray-800 dark:text-neutral-200">
+                                    <span class="showLambat">Rp. {{ number_format($d->telat,0,',','.') }}</span>
+                                </td>
                                 <td class="px-3 py-2 whitespace-nowrap text-gray-800 dark:text-neutral-200">
-                                    <span class="showDenda">{{ $total }}</span>
+                                    <span class="showDenda">Rp. {{ number_format($d->total,0,',','.') }}</span>
                                     <input type="hidden" name="lines[${idx}][produk_id]" class="line-produk_id"
-                                        value="${ item.katalog_id }" />
+                                        value="{{ $d->katalog->id }}" />
                                     <input type="hidden" name="lines[${idx}][denda]" class="line-denda"
                                         value="{{ $d->telat }}" />
                                     <input type="hidden" name="lines[${idx}][harga]" class="line-harga"
-                                        value="${item.katalog.harga}" />
+                                        value="{{ $d->katalog->harga_beli }}" />
                                     <input type="hidden" name="lines[${idx}][normal]" class="line-normal"
-                                        value="${item.jumlah}" />
+                                        value="{{ $d->jumlah }}" />
                                     <input type="hidden" name="lines[${idx}][lambat]" class="line-lambat"
-                                        value="${ denda }" />
+                                        value="{{ $d->total }}" />
                                 </td>
                             </tr>
                         @endforeach
@@ -252,8 +279,11 @@
             }
 
             var total_denda = denda_ringan + denda_sedang + denda_total + denda_hilang + lambat;
+            // console.log(denda_ringan);
             tr.find('.line-denda').val(total_denda);
             tr.find('.showDenda').html(currency(total_denda));
+            tr.find('.showHilang').html(currency(denda_hilang));
+            tr.find('.showRusak').html(currency(denda_ringan + denda_sedang + denda_total ));
             calculateTotal();
 
         });

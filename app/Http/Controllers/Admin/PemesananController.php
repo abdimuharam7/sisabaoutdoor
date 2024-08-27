@@ -111,7 +111,7 @@ class PemesananController extends Controller
             ]);
     
             Mail::send('emails.invoice', $data->toArray(), function($message)use($pemesanan, $pdf) {
-                $message->to($pemesanan->user->email, $data->user->nama)
+                $message->to($pemesanan->user->email, $$pemesanan->user->nama)
                         ->subject("Invoice ". $pemesanan->kode_transaksi)
                         ->attachData($pdf->output(), "Invoice ". $pemesanan->kode_transaksi ." .pdf");
             });

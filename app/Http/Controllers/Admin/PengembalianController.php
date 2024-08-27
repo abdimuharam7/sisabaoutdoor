@@ -42,7 +42,7 @@ class PengembalianController extends Controller
         $pengembalian = Pengembalian::latest()->get()->pluck('pemesanan_id');
 
         $pemesanan = Pemesanan::select('kode_transaksi as label', 'id as value')
-        ->where('status_penyewaan', 'diterima')->whereNotIn('id', $pengembalian)->get()->toArray();
+        ->where('status_penyewaan', 'diterima')->whereNotIn('id', $pengembalian)->get();
 
         return view('admin.pengembalian.create',compact('pemesanan'));
     }

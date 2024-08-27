@@ -62,7 +62,7 @@
                     <p>{{ $data->durasi }} Hari</p>
                 </div>
                 <div class="flex gap-1">
-                    <p class="w-48 flex-none">Status</p>
+                    <p class="w-48 flex-none">Status Penyewaan</p>
                     <p>:</p>
                     <p>{{ $data->status_penyewaan }}</p>
                 </div>

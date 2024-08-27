@@ -120,7 +120,9 @@
                 enableTime: true,
                 noCalendar: true,
                 dateFormat: "H:i",
-                time_24hr: true
+                time_24hr: true,
+                minTime: "07:00",
+                maxTime: "22:00",
             });
 
             $('.btn-inc').click(function() {
